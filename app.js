@@ -7,7 +7,7 @@ var eos = Eos.Testnet({httpEndpoint: 'http://dev.cryptolions.io:18888', keyProvi
 
 
 var app = express();
-var port = 80;
+var port = 3000;
 
 //view
 app.set('view engine', 'ejs');
