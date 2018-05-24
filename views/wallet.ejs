@@ -1,0 +1,71 @@
+<html>
+	<head>
+		<title>EOS Wallet Pro | Wallet</title>
+		<link rel="stylesheet" type="text/css" href="wallet.css">
+	</head>
+
+
+	<body>
+		<header id="header"><div id="header-box"><h1 id="hashbit-text" class="header-text">HASHBIT</h1><h1 id="walletpro-text" class="center header-text">eoswalletpro.com</h1><h1 id="eos-price" class="header-text">1 EOS: 23 USD</h1></div></header>
+
+		<div id="account-details" class="center box">
+			<h1 id="account-name" class="account-names">EOSIO</h1>
+			<h1 id="balance-head" class="account-names">Balance: 90 EOS : $400.34</h1>
+			<h1 id="ram-head" class="account-names">Ram: 99283</h1>
+			<button id="qr-but" class="account-names button-blue">QR Address</button>
+		</div>
+
+		<div id="send-box" class="box">
+			<h1 id="send-title" class="center">Transaction</h1>
+			<form id="send-form">
+				<p class="send-subs" id="to-sub">To Account</p>
+				<input type="text" id="to" placeholder="Enter account recipient" class="send-bars center">
+				<p class="send-subs" id="amount-sub">Amount to send</p>
+				<input type="text" id="amount" class="send-bars center" placeholder="Enter amount to send">
+				<select id="selector">
+					<option value="EOS">EOS</option>
+				</select>
+				<p id="send-all">Send entire balance</p>
+				<button id="send-but" class="center button-green">Send Transaction</button>
+			</form>
+		</div>
+
+		<div id="block-info" class="box">
+			<h1 class="block-title">Last block: #1280</h1>
+			<div class="block-deets">
+				<button class="button-blue blocks center" id="get-account">View Account History</button>
+				<button class="button-green blocks center" id="buy-eos">Swap ETH <-> EOS</button>
+				<button class="button-green blocks center" id="buy-token">Purchase EOS</button>
+				<button class="button-green blocks center" id="buy-tokens">Purchase Tokens</button>
+			</div>
+		</div>
+
+	<div id="account-box" class="center box">
+		<div id="account-deets" class="box">
+			<h1 id="account-deet-title">Your Account Details</h1>
+			<h1 id="account-balance" class="account-subs">Balance: 82309 EOS</h1>
+			<h1 id="cpu-limit" class="account-subs">CPU limit: 1238</h1>
+			<h1 id="ram-usage" class="account-subs">Ram usage: null</h1>
+			<h1 id="ram-quota" class="account-subs">Ram quota: 123908</h1>
+			<h1 id="net-weight" class="account-subs">Net weight: 218930</h1>
+			<h1 id="delegated-bandwidth" class="account-subs">Bandwidth: 128309</h1>
+			<h1 id="staked-voting" class="account-subs">Staked in voting: 0 EOS</h1>
+		</div>
+		<div id="token-balance-box" class="box">
+			<h1 id="token-balance-title">Your Tokens</h1>
+			<ul id="column1">
+				<li>100.000 JUNGLE <button class="button-blue column-but">Trade</button></li>
+				<li>100.000 JUNGLE <button class="button-blue column-but">Trade</button></li>
+			</ul>
+			<ul id="column2">
+				<li>300.000 ATH <button class="button-blue column-but2">Trade</button></li>
+			</ul>
+		</div>
+	</div>
+	<div id="padd"></div>
+	</body>
+	<script src="login.js"></script>
+</html>
+
+
+

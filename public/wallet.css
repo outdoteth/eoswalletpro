@@ -1,0 +1,354 @@
+body {
+	font-family: menlo, sans-serif;
+}
+
+html,body {padding:0; margin:0;}
+
+
+.center {
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%);
+}
+
+.box {
+	background-color: white;
+	border-radius: 12px;
+	box-shadow: 16px 28px 74px 0px rgba(0,0,0,0.25);
+}
+
+#header {
+	position: absolute;
+	top: 0%;
+	border-bottom: 4px solid;
+	border-bottom-color: #012356;
+	width: 100%;
+	height: 46px;
+	background: linear-gradient(to right, #010356 , #55AAFF);
+}
+
+.header-text {
+	color: #EFF0F0;
+}
+
+
+
+#hashbit-text {
+	font-size: 18px;
+	position: absolute;
+	left: 2%;
+	top:0%;
+}
+
+#eos-price {
+	font-size: 18px;
+	position: absolute;
+	right: 4%;
+	top: 0%;
+}
+
+#walletpro-text {
+	font-size: 20px;
+	position: absolute;
+	top: 0%;
+}
+
+#account-details {
+	top: 110px;
+	width: 80%;
+	height: 40px;
+	box-shadow: 0px 0px 74px 0px rgba(0,0,0,0.25);
+}
+
+.account-names {
+	position: absolute;
+	top: -3px;
+	font-size: 18px;
+}
+
+#account-name {
+	left: 3%;
+}
+
+#balance-head {
+	left: 20%;
+}
+
+#ram-head {
+	left: 56%;
+}
+
+#qr-but {
+	top: 5px;
+	left: 82%;
+	height: 30px;
+	width: 17%;
+}
+
+.button-blue {
+	background-color: #0072FF;
+	border-color: #0072FF;
+	color: white;
+	border-radius: 7px;
+	font-size: 14px;
+	outline: none;
+	font-family: menlo;
+}
+
+.button-green {
+	background-color: #00DF80;
+	border-color: #00DF80;
+	color: white;
+	border-radius: 7px;
+	font-size: 14px;
+	outline: none;
+	font-family: menlo;
+}
+
+.button-green:hover {
+	background-color: #00AA70;
+	cursor: pointer;
+	border-color: #00AA70;
+}
+
+.button-blue:hover{
+	background-color: #00C3FF;
+	cursor: pointer;
+	border-color: #00C3FF;
+}
+
+#send-box {
+	position: absolute;
+	left: 10%;
+	top: 180px;
+	width: 50%;
+	height: 300px;
+}
+
+#selector {
+	position: absolute;
+	right: 9%;
+	top: 165px;
+	width: 70px;
+	height: 38px;
+}
+
+#send-form {
+	height: 100%;
+	width: 100%;
+}
+
+.send-bars {
+	outline: none;
+	width: 80%;
+	height: 38px;
+	border-radius: 3px;
+	border:2px solid grey;
+	text-indent: 12px;
+}
+
+#send-all {
+	position: absolute;
+	left: 11%;
+	font-size: 10px;
+	top: 198px;
+	color: #0072FF;
+}
+
+#send-all:hover {
+	cursor: pointer;
+	color: #0022FF;
+}
+
+.send-subs {
+	position: absolute;
+	font-size: 14px;
+	left: 11%;
+}
+
+#to-sub {
+	top: 55px;
+}
+
+#amount-sub {
+	top: 130px;
+}
+
+#to {
+	top: 90px;
+}
+
+#amount {
+	top: 165px;
+}
+
+#send-but {
+	top: 239px;
+	height: 38px;
+	width: 80%;
+}
+
+#send-title {
+	font-size: 22px;
+	top: 15px;
+}
+
+#block-info {
+	position: absolute;
+	left: 63%;
+	top: 180px;
+	width: 27%;
+	height: 300px;
+}
+
+.block-tit {
+	position: absolute;
+	font-size: 20px;
+	top: 11px;
+	left: 7%;
+}
+
+.block-i {
+	position: absolute;
+	left: 0%;
+	top: 55px;
+	width: 100%;
+	height: 100%;
+}
+
+.blocks{
+	width: 90%;
+	height: 42px;
+}
+
+#get-account {
+	top: 10px;
+}
+
+#buy-eos {
+	top: 64px;
+}
+
+#buy-token {
+	top: 118px;
+}
+
+#buy-tokens {
+	top: 172px;
+}
+
+#success {
+	position: absolute;
+	width: 100%;
+	height: 60px;
+	background-color: #00DF80;
+	z-index: 9;
+	border-radius: 9px;
+}
+
+#success-message {
+	font-size: 12px;
+	color: white;
+	position: absolute;
+	left: 10%;
+	font-weight: 300;
+}
+
+#tx-id {
+	font-size: 12px;
+	color: white;
+	position: absolute;
+	left: 10%;
+	font-weight: 300;
+	top: 25px;
+}
+
+
+#account-box {
+	width: 80%;
+	height: 300px;
+	top: 520px;
+}
+
+#account-deet-title {
+	width: 100%;
+	font-size: 22px;
+}
+
+#account-deets {
+	position: absolute;
+	top: 30px;
+	width: 80%;
+	left: 5%;
+}
+
+#further-deets {
+	position: absolute;
+	left: 6px;
+}
+
+#token-balance-box {
+	position: absolute;
+	left: 37%;
+	top: 30px;
+}
+
+#token-balance-title {
+	font-size: 22px;
+}
+
+#columns {
+	position: absolute;
+	left: 5px;
+	width: 500px;
+	top: 30px;
+}
+
+ul {
+	list-style-type: none;
+	padding: 0;
+	width: 100%;
+	font-size: 18px;
+	font-weight: 545;
+}
+
+#column2 {
+	position: absolute;
+	left: 70%;
+	top: 15px;
+}
+
+#column1 {
+	position: absolute;
+	left: 0%;
+	top: 15px;
+}
+
+li {
+	margin: 0 0 18px 0;
+}
+
+.column-but {
+	position: absolute;
+	left: 45%;
+	width: 110px;
+	height: 25px;
+}
+
+.column-but2 {
+	width: 110px;
+	height: 25px;
+	position: absolute;
+	left: 37%;
+}
+
+.account-subs {
+	font-size: 15px;
+}
+
+#padd {
+	position: absolute;
+	top: 107%;
+	width: 70%;
+	height: 50px;
+}
