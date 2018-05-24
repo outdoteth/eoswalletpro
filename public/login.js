@@ -1,59 +1,19 @@
 let ecc = require('./eosjs-ecc/src/index');
 
-let userAccounts = [];
 let priv;
 let pub;
+let account;
 
 $("#loginbut").on('click', function() {
 	priv = $('#privkey').val();
 	pub = ecc.privateToPublic(priv);
 	if (pub[0] === "E") {
 		console.log(pub);
-		userAccounts.push(pub);
+		account = $(".acct-login").val();
 		toggleHide(".login", false);
 		toggleHide(".main-wallet", true);
-		getInfo(pub);
-
-			/*$("#sendtx").click(function(){
-				let _from = $('#from').val();
-				let _to = $('#to').val();
-				let _amount = $('#amount').val();
-
-				//sends tx params
-				$.post('/transaction', {from: _from, to: _to, amount: _amount}, function(data, status) {
-					$("h1").text("Transaction is being signed");
-					//signs serialized tx
-					let bufferOriginal = Buffer.from(JSON.parse(data.buf).data);
-					let sig = []
-					sig.push(ecc.sign(bufferOriginal, priv));
-					console.log(sig);
-
-					//sends sig back to server
-					$.post('/pushtransaction', {sigs: ecc.sign(bufferOriginal, priv)}, function(data, status){
-						console.log(data);
-					});
-				})
-			});
-
-			$("#sendtokenbut").on('click', function(){
-				let _tokentarget = $("#token-name").val();
-				let _from = $("#token-from").val();
-				let _to = $("#token-to").val();
-				let _amount = $("#token-amount").val();
-
-				$.post('/tokentransaction', {token: _tokentarget, from: _from, to: _to, amount: _amount}, function(data, status){
-					//signs serialized tx
-					let bufferOriginal = Buffer.from(JSON.parse(data.buf).data);
-					let sig = [];
-					sig.push(ecc.sign(bufferOriginal, priv));
-					console.log(sig);
-
-
-				})
-
-			})*/
-
-
+		getInfo(account);
+		$("#account-name").text("Account: " + account);
 	} else {
 		alert("Invalid Private Key - Please Try Again");
 	};
@@ -66,8 +26,8 @@ $("#cross").on("click", function(){
 let count = 0;
 let eosBalance;
 
-function getInfo(pubkey) {
-	$.post('/pubtoacct', {pubkey: pubkey}, function(data){
+function getInfo(account_t) {
+	$.post('/pubtoacct', {account_target: account_t}, function(data){
 		let balanceArray = data.balances.balances.rows;
 		let eosBalanceI = balanceArray[0].balance.split(' ');
 		eosBalance = eosBalanceI[0];
@@ -106,12 +66,14 @@ $("#send-but").on("click", function() {
 	$.post('/transaction', {from: "dylan", to: _to, amount: _amount}, function(data, status) {
 		//signs serialized tx
 		let bufferOriginal = Buffer.from(JSON.parse(data.buf).data);
+		let packedTr = data.packedTr;
+		console.log(packedTr);
 		let sig = []
 		sig.push(ecc.sign(bufferOriginal, priv));
 		console.log(sig);
 
 		//sends sig back to server
-		$.post('/pushtransaction', {sigs: ecc.sign(bufferOriginal, priv)}, function(data, status){
+		$.post('/pushtransaction', {sigs: ecc.sign(bufferOriginal, priv), packedTr: packedTr}, function(data, status){
 			console.log(data);
 			getInfo(pub);
 			toggleHide("#success", true);

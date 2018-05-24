@@ -13,21 +13,22 @@ var port = 3000;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-//for pushing the transaction
-let sigbuf;
-
 var fetchUrl = require("fetch").fetchUrl;
 
 // source file is iso-8859-15 but it is converted to utf-8 automatically
 let price;
 
-//setInterval(function(){
-	fetchUrl("https://api.coinmarketcap.com/v2/ticker/1765/?convert=EUR", function(error, meta, body){
-		let x = body.toString();
-		let f = JSON.parse(x);
-    	price = f.data.quotes.USD.price.toString();
-	});
-//}, 6000 * 10 * 10)
+function setPrice() {
+	setInterval(function(){
+		fetchUrl("https://api.coinmarketcap.com/v2/ticker/1765/?convert=EUR", function(error, meta, body){
+			let x = body.toString();
+			let f = JSON.parse(x);
+	    	price = f.data.quotes.USD.price.toString();
+		});
+	}, 6000 * 10 * 10)
+}
+
+setPrice();
 
 
 //Middleware
@@ -85,13 +86,13 @@ app.post('/getbalance', function (req, res){
 app.post('/pubtoacct', function(req, res){
 	//let pub = req.body.pubkey;
 	//eos.getaccounts(pub).then(accountRes => {});
-	eos.getAccount("dylan").then(result=>{
+	eos.getAccount(req.body.account_target).then(result=>{
 		let ram_quota = result.ram_quota;
 		let ram_usage = result.ram_usage;
 		let bandwidth = result.delegated_bandwidth;
 		let cpu_limit = result.cpu_limit.available; 
 		let created = result.created;
-		eos.getTableRows({code: 'eosio.token', scope: 'dylan', table: 'accounts', json: true}).then(result2=>{
+		eos.getTableRows({code: 'eosio.token', scope: req.body.account_target, table: 'accounts', json: true}).then(result2=>{
 			let balances = result2;
 			res.send({
 				balances: {balances: balances},
@@ -108,13 +109,13 @@ app.post('/pubtoacct', function(req, res){
 
 
 
-//----------------------- LOGIN WITH PRIVATE KEY ------------------------//
+//----------------------- LOGIN WITH PUBLIC KEY ------------------------//
 
 app.post('/login', function(req, res, status){
 
 });
 
-//----------------------- LOGIN WITH PRIVATE KEY ------------------------//
+//----------------------- LOGIN WITH PUBLIC KEY ------------------------//
 
 
 
@@ -142,9 +143,6 @@ app.post('/createaccount', function(req, res, status) {
 
 //----------------------- CREATE RAW EOS TRANSACTION ------------------------//
 
-let packedTr;
-let i = 0;
-
 app.post('/transaction', function(req, res, status) {
 	let params = req.body;
 
@@ -152,38 +150,24 @@ app.post('/transaction', function(req, res, status) {
 	if (params.to && params.amount) {
 		eos.transfer("dylan", params.to, params.amount, "", {broadcast: false, sign: false}).then(result=>{
 			console.log(req.body);
-			packedTr = result.transaction;
+			let packedtr = result.transaction;
 			console.log(result.buffer);
 			console.log(result.transaction);
 			//let testsig = Eos.modules.ecc.sign(result.buffer, "5HwGj4jBXQgAQva8pFpTvnJGMicvciHDQPQhbszXYXHge8kZeB1");
+			let packedTr = JSON.stringify(packedtr);
 			let stringBuf = JSON.stringify(result.buffer);
-			res.send({buf: stringBuf});
+			res.send({buf: stringBuf, packedTr: packedTr});
 			res.end();
 		});
 	} else {
 		i++;
-		console.log("error" + i);
-		res.send({ e: "error"});
+		console.log("error " + i);
+		res.send({e: "error"});
 		res.end();
 	}
 });
 
 //----------------------- CREATE RAW EOS TRANSACTION ------------------------//
-
-
-
-
-//----------------------- CREATE RAW TOKEN TRANSACTION ------------------------//
-
-app.post('/tokentransaction', function(req, res, status){
-	let token = req.body;
-	eos.transaction(token.token, currency => {
-		currency.transfer(token.from, token.to, token.amount)
-	})
-});
-
-//----------------------- CREATE RAW TOKEN TRANSACTION ------------------------//
-
 
 
 
@@ -195,10 +179,13 @@ app.post('/pushtransaction', function(req, res) {
 	if (req.body.sigs) {
 		let sigver = Eos.modules.ecc.Signature.from(req.body.sigs).toString();
 		let lasig = [sigver];
+		console.log(req.body.packedTr);
+		let transi = JSON.parse(req.body.packedTr);
+
 		//let sigver = req.body.sigs;
 		let package = {
 			compression: 'none',
-			transaction: packedTr,
+			transaction: transi,
 			signatures: lasig
 		}
 	

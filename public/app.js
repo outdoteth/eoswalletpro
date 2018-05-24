@@ -1709,7 +1709,7 @@ module.exports={
   "_args": [
     [
       "bigi@1.4.2",
-      "/Users/levi/Desktop/eoswalletpro/eosjs-ecc"
+      "/Users/levi/Desktop/fa/public/eosjs-ecc"
     ]
   ],
   "_from": "bigi@1.4.2",
@@ -1734,7 +1734,7 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/bigi/-/bigi-1.4.2.tgz",
   "_spec": "1.4.2",
-  "_where": "/Users/levi/Desktop/eoswalletpro/eosjs-ecc",
+  "_where": "/Users/levi/Desktop/fa/public/eosjs-ecc",
   "bugs": {
     "url": "https://github.com/cryptocoinjs/bigi/issues"
   },
@@ -11393,11 +11393,12 @@ PrivateKey.fromBuffer = function(buf) {
     if (!Buffer.isBuffer(buf)) {
         throw new Error("Expecting parameter to be a Buffer type");
     }
-    if (32 !== buf.length) {
-        console.log(`WARN: Expecting 32 bytes, instead got ${buf.length}, stack trace:`, new Error().stack);
+    if(buf.length === 33 && buf[32] === 1) {
+      // remove compression flag
+      buf = buf.slice(0, -1)
     }
-    if (buf.length === 0) {
-        throw new Error("Empty buffer");
+    if (32 !== buf.length) {
+      throw new Error(`Expecting 32 bytes, instead got ${buf.length}`);
     }
     return PrivateKey(BigInteger.fromBuffer(buf));
 }
@@ -12251,60 +12252,20 @@ Signature.from = (o) => {
 (function (Buffer){
 let ecc = require('./eosjs-ecc/src/index');
 
-let userAccounts = [];
 let priv;
 let pub;
+let account;
 
 $("#loginbut").on('click', function() {
 	priv = $('#privkey').val();
 	pub = ecc.privateToPublic(priv);
 	if (pub[0] === "E") {
 		console.log(pub);
-		userAccounts.push(pub);
+		account = $(".acct-login").val();
 		toggleHide(".login", false);
 		toggleHide(".main-wallet", true);
-		getInfo(pub);
-
-			/*$("#sendtx").click(function(){
-				let _from = $('#from').val();
-				let _to = $('#to').val();
-				let _amount = $('#amount').val();
-
-				//sends tx params
-				$.post('/transaction', {from: _from, to: _to, amount: _amount}, function(data, status) {
-					$("h1").text("Transaction is being signed");
-					//signs serialized tx
-					let bufferOriginal = Buffer.from(JSON.parse(data.buf).data);
-					let sig = []
-					sig.push(ecc.sign(bufferOriginal, priv));
-					console.log(sig);
-
-					//sends sig back to server
-					$.post('/pushtransaction', {sigs: ecc.sign(bufferOriginal, priv)}, function(data, status){
-						console.log(data);
-					});
-				})
-			});
-
-			$("#sendtokenbut").on('click', function(){
-				let _tokentarget = $("#token-name").val();
-				let _from = $("#token-from").val();
-				let _to = $("#token-to").val();
-				let _amount = $("#token-amount").val();
-
-				$.post('/tokentransaction', {token: _tokentarget, from: _from, to: _to, amount: _amount}, function(data, status){
-					//signs serialized tx
-					let bufferOriginal = Buffer.from(JSON.parse(data.buf).data);
-					let sig = [];
-					sig.push(ecc.sign(bufferOriginal, priv));
-					console.log(sig);
-
-
-				})
-
-			})*/
-
-
+		getInfo(account);
+		$("#account-name").text("Account: " + account);
 	} else {
 		alert("Invalid Private Key - Please Try Again");
 	};
@@ -12317,8 +12278,8 @@ $("#cross").on("click", function(){
 let count = 0;
 let eosBalance;
 
-function getInfo(pubkey) {
-	$.post('/pubtoacct', {pubkey: pubkey}, function(data){
+function getInfo(account_t) {
+	$.post('/pubtoacct', {account_target: account_t}, function(data){
 		let balanceArray = data.balances.balances.rows;
 		let eosBalanceI = balanceArray[0].balance.split(' ');
 		eosBalance = eosBalanceI[0];
@@ -12357,12 +12318,14 @@ $("#send-but").on("click", function() {
 	$.post('/transaction', {from: "dylan", to: _to, amount: _amount}, function(data, status) {
 		//signs serialized tx
 		let bufferOriginal = Buffer.from(JSON.parse(data.buf).data);
+		let packedTr = data.packedTr;
+		console.log(packedTr);
 		let sig = []
 		sig.push(ecc.sign(bufferOriginal, priv));
 		console.log(sig);
 
 		//sends sig back to server
-		$.post('/pushtransaction', {sigs: ecc.sign(bufferOriginal, priv)}, function(data, status){
+		$.post('/pushtransaction', {sigs: ecc.sign(bufferOriginal, priv), packedTr: packedTr}, function(data, status){
 			console.log(data);
 			getInfo(pub);
 			toggleHide("#success", true);

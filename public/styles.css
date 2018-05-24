@@ -1,8 +1,30 @@
+#on-testnet {
+	width: 70%;
+	height: 37px;
+	background-color: #FFC125;
+	position: absolute;
+	top: 60px;
+	left: 50%;
+	transform: translate(-50%);
+	border-radius: 9px;
+	z-index: 30;
+}
+
+#jungle-test {
+	font-size: 10px;
+	color: white;
+	text-align: center;
+}
+
+
+
 body {
 	font-family: menlo, sans-serif;
 }
 
-html,body {padding:0; margin:0;}
+html,body {
+	padding:0; margin:0;
+}
 
 #header {
 	position: fixed;
@@ -297,7 +319,7 @@ html,body {padding:0; margin:0;}
 	width: 80;
 	outline: none;
 	position: absolute;
-	left: 50%;
+	left: 51%;
 	transform: translate(373%);
 	top: 57px;
 	border-width: 2px;
@@ -318,9 +340,32 @@ html,body {padding:0; margin:0;}
 	width: 100%;
 }
 
+#x {
+	height: 100%;
+	width: 100%;
+}
+
 .login-dimensions {
 	outline: none;
 	width: 500px;
+	height: 38px;
+	border-radius: 3px;
+	border:2px solid grey;
+	text-indent: 12px;
+}
+
+.priv-login {
+	outline: none;
+	width: 400px;
+	height: 38px;
+	border-radius: 3px;
+	border:2px solid grey;
+	text-indent: 12px;
+}
+
+.acct-login {
+	outline: none;
+	width: 100px;
 	height: 38px;
 	border-radius: 3px;
 	border:2px solid grey;

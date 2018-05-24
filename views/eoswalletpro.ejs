@@ -8,6 +8,7 @@
 </head>
 
 <body>
+	<div id="on-testnet"><h1 id="jungle-test">Please note: eoswalletpro is not running on the mainnet! We are currently live on "JUNGLE" - a community testnet that is using v4.1.0 of Dawn. On behalf of the whole <em>Hashbit</em> team, we would like to say a huge thanks to <em>Block.One</em>, <em>Scatter</em> and the community for developing the software necessary for eoswalletpro to run properly!</h1></div>
 	<div class="login show">
 	<header id="header"><div id="header-box"><h1 id="hashbit-text">HASHBIT</h1><h1 id="eos-price">1 EOS: <%= price%> USD</h1></div></header>
 	<div id="title-box">
@@ -17,9 +18,12 @@
 		<div class="login-inputs">
 		<form class="login-pos" autocomplete="nope">
 			<h2 class="unlock-title">Unlock Wallet</h2>
-			<input type="text" name="privKey" placeholder="Enter your private key" id="privkey" class="login-dimensions" autocomplete="nope">
-			<input type="button" value="UNLOCK" id="loginbut" class="login-buts">
-			<input type="button" value="SCATTER" id="scatter-unlock">
+			<div id="x">
+				<input type="text" name="account-set" placeholder="Enter account" id="account-set" class="acct-login" autocomplete="nope">
+				<input type="text" name="privKey" placeholder="Enter your private key" id="privkey" class="priv-login" autocomplete="nope">
+				<input type="button" value="UNLOCK" id="loginbut" class="login-buts">
+				<input type="button" value="SCATTER" id="scatter-unlock">
+			</div>
 		</form>
 
 		<form class="login-pos">
