@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
-var Eos = require('./eosjs-recent/src/index');
+var Eos = require('./eosjs-new/eosjs/src/index');
 var eos = Eos.Testnet({httpEndpoint: 'http://dev.cryptolions.io:38888', keyProvider: '5K2KsDfwjTxCfJDprHSEkFGeQbgAWHPErju8ViuZ9SALw19FNW2'});
 
 
@@ -18,17 +18,15 @@ var fetchUrl = require("fetch").fetchUrl;
 // source file is iso-8859-15 but it is converted to utf-8 automatically
 let price;
 
-function setPrice() {
-	setInterval(function(){
+//function getPrice() {
+//	setInterval(function(){
 		fetchUrl("https://api.coinmarketcap.com/v2/ticker/1765/?convert=EUR", function(error, meta, body){
 			let x = body.toString();
 			let f = JSON.parse(x);
 	    	price = f.data.quotes.USD.price.toString();
 		});
-	}, 6000 * 10 * 10)
-}
-
-setPrice();
+//	}, 6000 * 10 * 10)
+//}
 
 
 //Middleware
@@ -53,8 +51,8 @@ app.get('/', function(req, res) {
 			miner: miner,
 			cpulimit: cpulimit,
 			price: price
-		});
-	});
+		})
+	}).catch(result2=>{res.send({error: "error"}); res.end()});;
 });
 
 app.listen(port, function() {
@@ -72,7 +70,7 @@ app.post('/lookupacct', function(req, res, status){
 		let bandwidth = result.delegated_bandwidth;
 		res.send({account: account, created: created, ram: ram, bandwidth: bandwidth});
 		res.end();
-	});
+	}).catch(function(){res.send({error: "error"}); res.end()});
 });
 
 app.post('/getbalance', function (req, res){
@@ -80,8 +78,9 @@ app.post('/getbalance', function (req, res){
 		console.log(result2);
 		res.send(result2.rows);
 		res.end();
-	});
+	}).catch(function(){res.send({error: "error"}); res.end()});
 });
+
 
 app.post('/pubtoacct', function(req, res){
 	//let pub = req.body.pubkey;
@@ -92,19 +91,23 @@ app.post('/pubtoacct', function(req, res){
 		let bandwidth = result.delegated_bandwidth;
 		let cpu_limit = result.cpu_limit.available; 
 		let created = result.created;
-		eos.getTableRows({code: 'eosio.token', scope: req.body.account_target, table: 'accounts', json: true}).then(result2=>{
-			let balances = result2;
-			res.send({
-				balances: {balances: balances},
-				ram_quota: ram_quota,
-				cpu_limit: cpu_limit,
-				ram_usage: ram_usage,
-				bandwidth: bandwidth,
-				created: created
-			});
-			res.end();
-		});
-	});
+		let account = result.account_name;
+		if (result.account_name) {
+			eos.getTableRows({code: 'eosio.token', scope: req.body.account_target, table: 'accounts', json: true}).then(result2=>{
+				let balances = result2;
+				res.send({
+					account: account,
+					balances: {balances: balances},
+					ram_quota: ram_quota,
+					cpu_limit: cpu_limit,
+					ram_usage: ram_usage,
+					bandwidth: bandwidth,
+					created: created
+				});
+				res.end();
+			}).catch(function(){i++;console.log("PUBTOACCT ");res.send({error: "error"}); res.end()});;
+		}
+	}).catch(function(){i++;console.log("PUBTOACCT ");res.send({error: "error"}); res.end()});
 });
 
 
@@ -146,25 +149,28 @@ app.post('/createaccount', function(req, res, status) {
 app.post('/transaction', function(req, res, status) {
 	let params = req.body;
 
-	//Sets the packed tr and the buffer to be signed
-	if (params.to && params.amount) {
-		eos.transfer("dylan", params.to, params.amount, "", {broadcast: false, sign: false}).then(result=>{
-			console.log(req.body);
-			let packedtr = result.transaction;
-			console.log(result.buffer);
-			console.log(result.transaction);
-			//let testsig = Eos.modules.ecc.sign(result.buffer, "5HwGj4jBXQgAQva8pFpTvnJGMicvciHDQPQhbszXYXHge8kZeB1");
-			let packedTr = JSON.stringify(packedtr);
-			let stringBuf = JSON.stringify(result.buffer);
-			res.send({buf: stringBuf, packedTr: packedTr});
+	eos.getAccount(params.to).then(result1=>{
+		if (params.to && params.amount && result1.account_name) {
+			console.log(params.from);
+			console.log(result1.account_name);
+			eos.transfer(params.from, params.to, params.amount, "", {broadcast: false, sign: false}).then(result=>{
+				console.log(req.body);
+				let packedtr = result.transaction;
+				console.log(result.buffer);
+				console.log(result.transaction);
+				//let testsig = Eos.modules.ecc.sign(result.buffer, "5HwGj4jBXQgAQva8pFpTvnJGMicvciHDQPQhbszXYXHge8kZeB1");
+				let packedTr = JSON.stringify(packedtr);
+				let stringBuf = JSON.stringify(result.buffer);
+				res.send({buf: stringBuf, packedTr: packedTr});
+				res.end();
+			}).catch(err => {
+				console.log("ERROR transaction");
+			});
+		} else {
+			res.send({e: "error"});
 			res.end();
-		});
-	} else {
-		i++;
-		console.log("error " + i);
-		res.send({e: "error"});
-		res.end();
-	}
+		}
+	}).catch(err=>{res.send({e: "error"}); res.end();});
 });
 
 //----------------------- CREATE RAW EOS TRANSACTION ------------------------//
@@ -191,10 +197,12 @@ app.post('/pushtransaction', function(req, res) {
 	
 		console.log(package);
 		//Pushes tx in correct format
-		eos.pushTransaction(package).then(result=>{
+		eos.pushTransaction(package)/*.catch(err=>{i++;console.log("PUBTOACCT " + i);})*/.then(result=>{
 			res.send(result);
 			res.end();
 			console.log(result);
+		}).catch(err => {
+			
 		});
 	}
 })

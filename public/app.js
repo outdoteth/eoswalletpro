@@ -12262,18 +12262,28 @@ $("#welcome-done").on("click", function(){
 
 $("#loginbut").on('click', function() {
 	priv = $('#privkey').val();
-	pub = ecc.privateToPublic(priv);
+	if (priv.length !== 51) {
+		toggleHide("#error-account", true);
+	}
+	else { pub = ecc.privateToPublic(priv)
 	if (pub[0] === "E") {
 		console.log(pub);
 		account = $(".acct-login").val();
 		toggleHide(".login", false);
 		toggleHide(".main-wallet", true);
-		getInfo(account);
-		$("#account-name").text("Account: " + account);
-	} else {
-		alert("Invalid Private Key - Please Try Again");
-	};
+		$.post('/pubtoacct', {account_target: account}, function(data){
+			if (data.account) {
+				console.log(data.account);
+				getInfo(account);
+				$("#account-name").text("Account: " + account);
+			} else {
+				$("#error-account").toggleClass("hide");
+			};
+		})
+	} 
+}
 });
+
 
 $("#cross").on("click", function(){
 	toggleHide(".create-box", false);
@@ -12323,7 +12333,7 @@ $("#send-but").on("click", function() {
 	let _to = $('#to').val();
 	let _amount = $('#amount').val() + " " + _token;
 	console.log(_amount);
-	$.post('/transaction', {from: "dylan", to: _to, amount: _amount}, function(data, status) {
+	$.post('/transaction', {from: account, to: _to, amount: _amount}, function(data, status) {
 		//signs serialized tx
 		let bufferOriginal = Buffer.from(JSON.parse(data.buf).data);
 		let packedTr = data.packedTr;
@@ -12331,15 +12341,16 @@ $("#send-but").on("click", function() {
 		let sig = []
 		sig.push(ecc.sign(bufferOriginal, priv));
 		console.log(sig);
-
-		//sends sig back to server
-		$.post('/pushtransaction', {sigs: ecc.sign(bufferOriginal, priv), packedTr: packedTr}, function(data, status){
-			console.log(data);
-			getInfo(pub);
-			toggleHide("#success", true);
-			$("#tx-id").text("Transaction Id: " + data.transaction_id);
-			setTimeout(function(){toggleHide("#success", false)}, 4000);
-		});
+		if (!data.e) {
+		
+				//sends sig back to server
+			$.post('/pushtransaction', {sigs: ecc.sign(bufferOriginal, priv), packedTr: packedTr}, function(data, status){
+				console.log(data);
+				toggleHide("#success", true);
+				$("#tx-id").text("Transaction Id: " + data.transaction_id);
+				setTimeout(function(){toggleHide("#success", false); getInfo(account);}, 4000);
+			});
+		}
 	})
 });
 

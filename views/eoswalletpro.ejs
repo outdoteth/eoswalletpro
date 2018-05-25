@@ -40,18 +40,21 @@
 	<div class="login show">
 	<header id="header"><div id="header-box"><h1 id="hashbit-text">HASHBIT</h1><h1 id="eos-price">1 EOS: <%= price%> USD</h1></div></header>
 	<div id="login-box">
-		<button id="telegram" class="button-blue">Join us on Telegram</button>
+		<div id="telegram1"><button id="telegram" class="button-blue">Join us on Telegram</button></div>
+		<div id="twitter1"><button id="twitter" class="button-blue">Twitter</button></div>
 		<div class="login-inputs">
-		<form class="login-pos" autocomplete="nope">
+
+
+		<form class="login-pos" autocomplete="off">
+			<h2 id="error-account" class="hide">Error: You either entered an invalid account or your private key does not match account permissions</h2>
 			<h2 class="unlock-title">Unlock Wallet</h2>
 			<div id="x">
 				<input type="text" name="account-set" placeholder="Enter account" id="account-set" class="acct-login" autocomplete="nope">
-				<input type="text" name="privKey" placeholder="Enter your 'active' private key" id="privkey" class="priv-login" autocomplete="nope">
+				<input type="text" autocomplete="off" name="privKey" placeholder="Enter your 'active' private key" id="privkey" class="priv-login">
 				<input type="button" value="UNLOCK" id="loginbut" class="login-buts">
 				<input type="button" value="SCATTER" id="scatter-unlock">
 			</div>
 		</form>
-
 		<form class="login-pos">
 			<h2 class="unlock-title">Create Wallet</h2>
 			<input type="text" id="userrand" placeholder="Enter some random characters" class="login-dimensions">

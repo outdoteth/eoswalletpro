@@ -18,12 +18,13 @@
 	color: grey;
 }
 
+
 #jungle-test {
 	position: absolute;
 	font-size: 15px;
 	color: black;
 	left: 50%;
-	top: 90px;
+	top: 85px;
 	transform: translate(-50%);
 	width: 90%;
 	text-align: justify;
@@ -34,7 +35,7 @@
 	position: absolute;
 	font-size: 15px;
 	left: 50%;
-	top: 200px;
+	top: 195px;
 	transform: translate(-50%);
 	width: 90%;
 	color: #4A4D51;
@@ -46,7 +47,7 @@
 	position: absolute;
 	font-size: 15px;
 	left: 50%;
-	top: 310px;
+	top: 305px;
 	color: #727272;
 	transform: translate(-50%);
 	width: 90%;
@@ -56,7 +57,7 @@
 
 #welcome-done {
 	position: absolute;
-	top: 85%;
+	top: 82%;
 	left: 50%;
 	transform: translate(-50%);
 	font-family: sans-serif;
@@ -75,6 +76,8 @@ html,body {
 .welcome-box {
 	background-color: white;
 	border-radius: 12px;
+	border-top: 6px solid;
+	border-top-color: #0072FF;
 	box-shadow: 0px 0px 300px 200px rgba(0,0,0,0.3);
 	position: absolute;
 	left: 50%;
@@ -217,30 +220,32 @@ html,body {
 	top: 67%;
 }
 
-#telegram {
+#twitter {
 	background-color: white;
 	color: #0072FF;
 	border-radius: 3px;
 	border-width: 1px;
 	border-color: #0072FF;
 	height: 38px;
-	width: 200px;
+	width: 130px;
 	outline: none;
 	position: absolute;
-	left: 2%;
+	left: 44%;
 	transform: translate(373%);
 	top: 79px;
 	border-width: 2px;
-	z-index: 2;
+	z-index: 3;
 }
 
-#telegram:hover {
+#twitter:hover {
 	border-color: #00C3FF;
 	color: white;
 	background-color: #00C3FF;
 	cursor: pointer;
 	border-width: 2px;
 }
+
+
 
 #generate-but {
 	position: absolute;
@@ -320,7 +325,15 @@ html,body {
 	z-index: 100;
 }
 
-
+#error-account {
+	position: absolute;
+	left: 24.7%;
+	text-align: center;
+	font-size: 12px;
+	color: #FF004E;
+	top: 94px;
+	font-weight: 50;
+}
 
 .lookup-but {
 	position: absolute;
@@ -463,6 +476,9 @@ html,body {
 #login-box {
 	border-radius: 23px;
 	background-color: white;
+	border-top: 4px solid #0072FF;
+	border-top-left-radius: 7px;
+	border-top-right-radius: 7px;
 	width: 80%;
 	max-width: 1250px;
 	height: 430px;
@@ -476,6 +492,7 @@ html,body {
 .what-is-eos {
 	display: none;
 }
+
 
 #footer {
 	position: absolute;
@@ -504,9 +521,13 @@ html,body {
 	font-size: 12px;
 }
 
+.what-is {
+	display: none;
+}
+
 .how-buttons {
 	height: 60px;
-	width: 230px;
+	width: 33%;
 	background-color: #0072FF;
 	color: white;
 	border-radius: 7px;
@@ -515,6 +536,7 @@ html,body {
 	font-size: 12px;
 	box-shadow: 16px 28px 74px 0px rgba(0,0,0,0.25);
 }
+
 
 .how-buttons:hover {
 	background-color: #00C3FF;
@@ -526,6 +548,8 @@ html,body {
 	position: absolute;
 	left: 33%;
 	height: 10%;
+	width: 100%;
+	height: 60px;
 }
 
 
@@ -573,10 +597,10 @@ html,body {
 	color: black;
 }
 
-.interval {
-	position: absolute;
-	left: 40%;
-	top: 44px;
+
+.block-deets {
+	height: 100px;
+	width: 50%;
 }
 
 .latency {
@@ -588,6 +612,13 @@ html,body {
 .blocknum {
 	position: absolute;
 	left: 10%;
+	top: 44px;
+}
+
+
+.interval {
+	position: absolute;
+	left: 40%;
 	top: 44px;
 }
 
@@ -603,10 +634,41 @@ html,body {
 	top: 76px;
 }
 
+@media only screen and (max-width: 1264px) {
+	.block-title {
+		position:absolute;
+		font-size:20px;
+		left: 0px;
+		letter-spacing: 1.2px;
+		color: black;
+	}
+
+	.latency {
+		position: absolute;
+		left: 0px;
+		top: 76px;
+	}
+
+	.blocknum {
+		position: absolute;
+		left: 0px;
+		top: 44px;
+	}
+
+}
 
 
+#telegram1 {
+	display: none;
+}
 
-@media only screen and (min-width: 1320px) {
+#twitter1 {
+	display: none;
+}
+
+
+@media only screen and (min-width: 1300px) {
+
 	.what-is-eos {
 		display: block;
 		width: 45%;
@@ -616,6 +678,18 @@ html,body {
 		top: 150px;
 		background: linear-gradient(to right, #0072FF , #00C3FF);
 		border-radius: 18px;
+		box-shadow: 16px 28px 74px 0px rgba(0,0,0,0.25);
+	}
+
+	.how-buttons {
+		height: 60px;
+		width: 230px;
+		background-color: #0072FF;
+		color: white;
+		border-radius: 7px;
+		border-color: #0072FF;
+		outline: none;
+		font-size: 12px;
 		box-shadow: 16px 28px 74px 0px rgba(0,0,0,0.25);
 	}
 
@@ -636,6 +710,7 @@ html,body {
 		font-size: 35px;
 	}
 
+
 	#what-para {
 		text-align: justify;
 		position: absolute;
@@ -649,9 +724,50 @@ html,body {
 		position: absolute;
 		left: 330px;
 	}
+
+	#telegram {
+		background-color: white;
+		color: #0072FF;
+		border-radius: 3px;
+		border-width: 1px;
+		border-color: #0072FF;
+		height: 38px;
+		width: 200px;
+		outline: none;
+		position: absolute;
+		left: 3%;
+		transform: translate(373%);
+		top: 79px;
+		border-width: 2px;
+		z-index: 2;
+	}
+
+	#telegram:hover {
+		border-color: #00C3FF;
+		color: white;
+		background-color: #00C3FF;
+		cursor: pointer;
+		border-width: 2px;
+	}
+
+	#telegram1 {
+		display: block;
+	}
+
+	#twitter1 {
+		display: none;
+	}
+
+	.what-is {
+		display: inline;
+	}
 }
 
-
+@media only screen and (min-width: 1416px) {
+	#twitter1 {
+		display: block;
+	}
+}
 
 
 
