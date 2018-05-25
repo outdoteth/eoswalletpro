@@ -5,22 +5,48 @@
 	<link rel="shortcut icon" href="favicon.png" type="image/png">
 
 	<link rel="stylesheet" type="text/css" href="styles.css">
+	<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 </head>
 
 <body>
-	<div id="on-testnet"><h1 id="jungle-test">Please note: eoswalletpro is not running on the mainnet! We are currently live on "JUNGLE" - a community testnet that is using v4.1.0 of Dawn. On behalf of the whole <em>Hashbit</em> team, we would like to say a huge thanks to <em>Block.One</em>, <em>Scatter</em> and the community for developing the software necessary for eoswalletpro to run properly!</h1></div>
-	<div class="login show">
-	<header id="header"><div id="header-box"><h1 id="hashbit-text">HASHBIT</h1><h1 id="eos-price">1 EOS: <%= price%> USD</h1></div></header>
+	<div class="lookup-box hide">
+		<h1 class="lookup-tit">Lookup Account</h1>
+		<form id="lookup-form">
+			<input type="text" placeholder="Enter account name. E.g. 'eosio'" class="lookup-dimensions lookup-val">
+			<input type="button" value="LOOKUP ACCOUNT" class="lookup-but button-green">
+		</form>
+		<h3 class="left-lookup" id="account-name-lookup">Account name: </h3>
+		<h3 class="left-lookup" id="balance-lookup">Balance: </h3>
+		<h3 class="left-lookup" id="ram-lookup">Ram quota: </h3>
+		<h3 class="left-lookup" id="bandwidth-lookup">Delegated bandwidth: </h3>
+		<h3 class="left-lookup" id="creation-lookup">Creation date: </h3>
+		<button id="lookup-done" class="button-green">DONE</button>
+	</div>
+
+	<div class="welcome-box">
+		<h1 class="lookup-tit">Welcome!</h1>
+		<div id="x-box">
+			<h1 id="jungle-test"><b id="note">Please note:</b> eoswalletpro is not running on the mainnet! We are currently live on "JUNGLE testnet" - a community testnet that is using v4.1.0 of Dawn. On behalf of the whole <em>Hashbit</em> team, we would like to say a huge thanks to <em>Block.One</em>, <em>Scatter</em> and the community for developing the software necessary for eoswalletpro to run properly!</h1>
+			<h1 id="welcome2">EWP is currently in beta but will be fully functional before EOS mainnet launch (June 1st) - There are still a few improvements that we have to make which include: Improving styling on smaller devices (at the moment we are only optomised for screens 13" and above), adding support for <em>Scatter</em>, account generation, implementing the extra features that some of the buttons have.</h1>
+			<h1 id="welcome3">You can create a testnet account at <a href="http://dev.cryptolions.io/#account">http://dev.cryptolions.io/#account</a> and get free testnet coins to play around with from <a href="http://dev.cryptolions.io/#faucet">http://dev.cryptolions.io/#faucet</a></h1>
+		</div>
+		<button id="welcome-done" class="button-green">Okay, got it</button>
+	</div>
+
 	<div id="title-box">
 		<h1 id="title">eoswalletpro.com</h1>
 	</div>
+
+	<div class="login show">
+	<header id="header"><div id="header-box"><h1 id="hashbit-text">HASHBIT</h1><h1 id="eos-price">1 EOS: <%= price%> USD</h1></div></header>
 	<div id="login-box">
+		<button id="telegram" class="button-blue">Join us on Telegram</button>
 		<div class="login-inputs">
 		<form class="login-pos" autocomplete="nope">
 			<h2 class="unlock-title">Unlock Wallet</h2>
 			<div id="x">
 				<input type="text" name="account-set" placeholder="Enter account" id="account-set" class="acct-login" autocomplete="nope">
-				<input type="text" name="privKey" placeholder="Enter your private key" id="privkey" class="priv-login" autocomplete="nope">
+				<input type="text" name="privKey" placeholder="Enter your 'active' private key" id="privkey" class="priv-login" autocomplete="nope">
 				<input type="button" value="UNLOCK" id="loginbut" class="login-buts">
 				<input type="button" value="SCATTER" id="scatter-unlock">
 			</div>
@@ -51,27 +77,12 @@
 		</div>
 		<div class="extra-buttons">
 			<div class="button-pos">
-				<button class="how-buttons how">HOW DOES EWP WORK?</button>
-				<button class="how-buttons explorer"">EXPLORER</button>
-				<button class="how-buttons what-is">WHAT IS EOS?</button>
+				<button class="how-buttons how button-blue">How does EWP work?</button>
+				<button class="how-buttons explorer button-blue">Explorer</button>
+				<button class="how-buttons what-is button-blue">What is Eos?</button>
 			</div>
-			<button class="lookup" id="lookupacct">LOOKUP ACCOUNT</button>
+			<button class="lookup button-green" id="lookupacct">Lookup Account</button>
 		</div>
-	</div>
-
-
-	<div class="lookup-box hide">
-		<h1 class="lookup-tit">Lookup Account</h1>
-		<form id="lookup-form">
-			<input type="text" placeholder="Enter account name. E.g. 'eosio'" class="lookup-dimensions lookup-val">
-			<input type="button" value="LOOKUP ACCOUNT" class="lookup-but button-green">
-		</form>
-		<h3 class="left-lookup" id="account-name-lookup">Account name: </h3>
-		<h3 class="left-lookup" id="balance-lookup">Balance: </h3>
-		<h3 class="left-lookup" id="ram-lookup">Ram quota: </h3>
-		<h3 class="left-lookup" id="bandwidth-lookup">Delegated bandwidth: </h3>
-		<h3 class="left-lookup" id="creation-lookup">Creation date: </h3>
-		<button id="lookup-done" class="button-green">DONE</button>
 	</div>
 
 	<div class="create-box hide">
@@ -85,8 +96,8 @@
 			<h3 class="keydisplay" id="privkeydis"></h3>
 			<h3 id="warning">Please make sure you store your keys somewhere safe</h3>
 		</div>
-		<h3 class="generate-acct-name">Okay, now you will have to generate an account...</h3>
-		<button id="generate-but">GENERATE ACCOUNT</button>
+		<h3 class="generate-acct-name">Okay, now you will have to generate an account... Just click the button below and then enter your generated public key in both fields and choose a random account name with letters ranging from (a-z and 1-5). After that, you will be able to login.</h3>
+		<button id="generate-but" onclick="window.open('http://dev.cryptolions.io/#account','_blank');">GENERATE ACCOUNT</button>
 		<h1 id="cross">X</h1>
 	</div>
 	</div>
@@ -102,7 +113,7 @@
 
 		<div id="account-details" class="center box">
 			<h1 id="account-name" class="account-names">dylan</h1>
-			<h1 id="balance-head" class="account-names">Balance: ? </h1>
+			<h1 id="balance-head" class="account-names">Balance: <button id="get-coins" class="button-green" onclick="window.open('http://dev.cryptolions.io/#faucet','_blank');">Get Coins</button> </h1>
 			<h1 id="ram-head" class="account-names">Ram: 99283</h1>
 			<button id="qr-but" class="account-names button-blue">QR Address</button>
 		</div>
@@ -140,12 +151,12 @@
 		<div id="account-deets">
 			<h1 id="account-deet-title">Your Account Details</h1>
 			<div id="further-deets">
-				<h1 id="account-balance" class="account-subs">Balance: ?</h1>
-				<h1 id="cpu-limit" class="account-subs">CPU limit: ?</h1>
-				<h1 id="ram-usage" class="account-subs">Ram usage: ?</h1>
-				<h1 id="ram-quota" class="account-subs">Ram quota: ?</h1>
-				<h1 id="delegated-bandwidth" class="account-subs">Bandwidth: ?</h1>
-				<h1 id="staked-voting" class="account-subs">Created: ?</h1>
+				<h1 id="account-balance" class="account-subs">Balance: 0 EOS</h1>
+				<h1 id="cpu-limit" class="account-subs">CPU limit: 0</h1>
+				<h1 id="ram-usage" class="account-subs">Ram usage: 0</h1>
+				<h1 id="ram-quota" class="account-subs">Ram quota: 0</h1>
+				<h1 id="delegated-bandwidth" class="account-subs">Bandwidth: 0</h1>
+				<h1 id="staked-voting" class="account-subs">Created: Your account must have a balance in order to show creation date</h1>
 			</div>
 		</div>
 		<div id="token-balance-box">

@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
 var Eos = require('./eosjs-recent/src/index');
-var eos = Eos.Testnet({httpEndpoint: 'http://dev.cryptolions.io:18888', keyProvider: '5K2KsDfwjTxCfJDprHSEkFGeQbgAWHPErju8ViuZ9SALw19FNW2'});
+var eos = Eos.Testnet({httpEndpoint: 'http://dev.cryptolions.io:38888', keyProvider: '5K2KsDfwjTxCfJDprHSEkFGeQbgAWHPErju8ViuZ9SALw19FNW2'});
 
 
 

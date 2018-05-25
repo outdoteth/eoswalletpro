@@ -12256,6 +12256,10 @@ let priv;
 let pub;
 let account;
 
+$("#welcome-done").on("click", function(){
+	$(".welcome-box").toggleClass("hide");
+})
+
 $("#loginbut").on('click', function() {
 	priv = $('#privkey').val();
 	pub = ecc.privateToPublic(priv);
@@ -12273,6 +12277,10 @@ $("#loginbut").on('click', function() {
 
 $("#cross").on("click", function(){
 	toggleHide(".create-box", false);
+});
+
+$("#buy-eos").on("click", function(){
+	toggleHide(".lookup-box", true);
 });
 
 let count = 0;

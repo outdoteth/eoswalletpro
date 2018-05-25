@@ -1,6 +1,3 @@
-body {
-	font-family: menlo, sans-serif;
-}
 
 html,body {padding:0; margin:0;}
 
@@ -20,17 +17,19 @@ html,body {padding:0; margin:0;}
 #header {
 	position: absolute;
 	top: 0%;
-	border-bottom: 4px solid;
-	border-bottom-color: #012356;
+	border-bottom: 2px solid;
+	border-bottom-color: grey;
 	width: 100%;
 	height: 46px;
-	background: linear-gradient(to right, #010356 , #55AAFF);
+	background: white;
+	letter-spacing: 2px;
 }
 
 .header-text {
-	color: #EFF0F0;
+	color: grey;
+	position: absolute;
+	top: 0%;
 }
-
 
 
 #hashbit-text {
@@ -43,14 +42,12 @@ html,body {padding:0; margin:0;}
 #eos-price {
 	font-size: 18px;
 	position: absolute;
-	right: 4%;
+	right: 2%;
 	top: 0%;
 }
 
 #walletpro-text {
-	font-size: 20px;
-	position: absolute;
-	top: 0%;
+	font-size: 18px;
 }
 
 #account-details {
@@ -71,7 +68,7 @@ html,body {padding:0; margin:0;}
 }
 
 #balance-head {
-	left: 20%;
+	left: 26%;
 }
 
 #ram-head {
@@ -92,7 +89,16 @@ html,body {padding:0; margin:0;}
 	border-radius: 7px;
 	font-size: 14px;
 	outline: none;
-	font-family: menlo;
+	font-family: sans-serif;
+}
+
+#get-coins {
+	position: absolute;
+	top: -3px;
+	left: 80px;
+	height: 30px;
+	font-size: 14px;
+	width: 100px;
 }
 
 .button-green {
@@ -102,7 +108,7 @@ html,body {padding:0; margin:0;}
 	border-radius: 7px;
 	font-size: 14px;
 	outline: none;
-	font-family: menlo;
+	font-family: sans-serif;
 }
 
 .button-green:hover {
@@ -186,6 +192,7 @@ html,body {padding:0; margin:0;}
 	top: 239px;
 	height: 38px;
 	width: 80%;
+	font-family: menlo;
 }
 
 #send-title {
@@ -292,6 +299,7 @@ html,body {padding:0; margin:0;}
 	left: 37%;
 	top: 30px;
 }
+
 
 #token-balance-title {
 	font-size: 22px;

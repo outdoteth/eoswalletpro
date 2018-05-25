@@ -1,29 +1,89 @@
 #on-testnet {
-	width: 70%;
-	height: 37px;
+	width: 62%;
 	background-color: #FFC125;
 	position: absolute;
-	top: 60px;
+	height: 40px;
+	top: 3px;
 	left: 50%;
 	transform: translate(-50%);
 	border-radius: 9px;
-	z-index: 30;
+	z-index: 10;
+}
+
+#x-box {
+	position: absolute;
+	height: 80%;
+	width: 100%;
+	top: 2%;
+	color: grey;
 }
 
 #jungle-test {
-	font-size: 10px;
-	color: white;
-	text-align: center;
+	position: absolute;
+	font-size: 15px;
+	color: black;
+	left: 50%;
+	top: 90px;
+	transform: translate(-50%);
+	width: 90%;
+	text-align: justify;
+	font-weight: 400;
 }
 
+#welcome2 {
+	position: absolute;
+	font-size: 15px;
+	left: 50%;
+	top: 200px;
+	transform: translate(-50%);
+	width: 90%;
+	color: #4A4D51;
+	text-align: justify;
+	font-weight: 400;
+}
 
+#welcome3 {
+	position: absolute;
+	font-size: 15px;
+	left: 50%;
+	top: 310px;
+	color: #727272;
+	transform: translate(-50%);
+	width: 90%;
+	text-align: justify;
+	font-weight: 400;
+}
+
+#welcome-done {
+	position: absolute;
+	top: 85%;
+	left: 50%;
+	transform: translate(-50%);
+	font-family: sans-serif;
+	height: 50px;
+	width: 200px;
+}
 
 body {
-	font-family: menlo, sans-serif;
+	font-family: lato, sans-serif;
 }
 
 html,body {
 	padding:0; margin:0;
+}
+
+.welcome-box {
+	background-color: white;
+	border-radius: 12px;
+	box-shadow: 0px 0px 300px 200px rgba(0,0,0,0.3);
+	position: absolute;
+	left: 50%;
+	top: 170px;
+	transform: translate(-50%);
+	height: 500px;
+	width: 50%;
+	max-width: 700px;
+	z-index: 700;
 }
 
 #header {
@@ -50,6 +110,7 @@ html,body {
 	transform: translate(-50%);
 	height: 65%;
 	width: 50%;
+	z-index: 700;
 }
 
 .left-lookup {
@@ -151,9 +212,34 @@ html,body {
 	position: absolute;
 	left: 50%;
 	transform: translate(-50%);
-	width: 100%;
+	width: 80%;
 	text-align: center;
 	top: 67%;
+}
+
+#telegram {
+	background-color: white;
+	color: #0072FF;
+	border-radius: 3px;
+	border-width: 1px;
+	border-color: #0072FF;
+	height: 38px;
+	width: 200px;
+	outline: none;
+	position: absolute;
+	left: 2%;
+	transform: translate(373%);
+	top: 79px;
+	border-width: 2px;
+	z-index: 2;
+}
+
+#telegram:hover {
+	border-color: #00C3FF;
+	color: white;
+	background-color: #00C3FF;
+	cursor: pointer;
+	border-width: 2px;
 }
 
 #generate-but {
@@ -161,7 +247,7 @@ html,body {
 	font-size: 12px;
 	left: 50%;
 	transform: translate(-50%);
-	top: 79%;
+	top: 83%;
 	width: 70%;
 	height: 50px;
 	background-color: #0072FF;
@@ -231,6 +317,7 @@ html,body {
 	transform: translate(-50%);
 	height: 65%;
 	width: 50%;
+	z-index: 100;
 }
 
 
@@ -255,15 +342,15 @@ html,body {
 	position: absolute;
 	left: 2%;
 	top:0%;
-	color: white;
+	color: grey;
 }
 
 #eos-price {
 	font-size: 20px;
 	position: absolute;
-	right: 4%;
+	right: 2%;
 	top: 0%;
-	color: white;
+	color: grey;
 }
 
 #title-box {
@@ -277,12 +364,13 @@ html,body {
 
 #title {
 	font-size: 30px;
-	letter-spacing: 4px;
+	letter-spacing: 7px;
 	text-align: center;
 }
 
 .unlock-title {
 	font-size: 20px;
+	letter-spacing: 1.5px;
 }
 
 .login-pos {
@@ -291,7 +379,7 @@ html,body {
 }
 
 .login-buts {
-	background-color: none;
+	background-color: white;
 	color: #0072FF;
 	border-radius: 3px;
 	border-color: #0072FF;
@@ -310,7 +398,7 @@ html,body {
 }
 
 #scatter-unlock {
-	background-color: none;
+	background-color: white;
 	color: #00AA70;
 	border-radius: 3px;
 	border-width: 1px;
@@ -319,7 +407,7 @@ html,body {
 	width: 80;
 	outline: none;
 	position: absolute;
-	left: 51%;
+	left: 50%;
 	transform: translate(373%);
 	top: 57px;
 	border-width: 2px;
@@ -369,11 +457,12 @@ html,body {
 	height: 38px;
 	border-radius: 3px;
 	border:2px solid grey;
-	text-indent: 12px;
+	text-indent: 10px;
 }
 
 #login-box {
 	border-radius: 23px;
+	background-color: white;
 	width: 80%;
 	max-width: 1250px;
 	height: 430px;
@@ -471,12 +560,17 @@ html,body {
 	top: 260px;
 	left: 20%;
 	font-size: 12px;
+	margin-left: 20px;
+	letter-spacing: 1.02px;
+	color: #292D32;
 }
 
 .block-title {
 	position:absolute;
 	font-size:20px;
 	left: 10%;
+	letter-spacing: 1.2px;
+	color: black;
 }
 
 .interval {
@@ -537,18 +631,18 @@ html,body {
 	#what-title {
 		color: white;
 		position: absolute;
-		top: -20px;
+		top: -28px;
 		left: 0px;
-		font-size: 30px;
+		font-size: 35px;
 	}
 
 	#what-para {
 		text-align: justify;
 		position: absolute;
-		top: 40px;
+		top: 42px;
 		left: 0px;
 		color: white;
-		font-size: 12px;
+		font-size: 13px;
 	}
 
 	.login-inputs {
