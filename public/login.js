@@ -11,12 +11,17 @@ $("#welcome-done").on("click", function(){
 $("#loginbut").on('click', function() {
 	priv = $('#privkey').val();
 	if (priv.length !== 51) {
+		$("#error-account").text("Error - Invalid private key");
 		toggleHide("#error-account", true);
 	}
 	else { pub = ecc.privateToPublic(priv)
 	if (pub[0] === "E") {
 		console.log(pub);
 		account = $("#account-set").val();
+		if (account.length !== 12) {
+			$("#error-account").text("Error - Due to the new Dawn 4.2.0 standard, account names must now be exactly 12 characters long");
+			toggleHide("#error-account", true);
+		} else {
 		$.post('/login', {pubkeys: pub, account: account}, function(data) {
 			if (data.login) {
 				console.log(pub);
@@ -33,9 +38,11 @@ $("#loginbut").on('click', function() {
 				}) 
 
 			} else {
-				console.log("data.e");
+				$("#error-account").text("Error - Private key does not match account permissions");
+				toggleHide("#error-account", true);
 			}
 		})
+	}
 	}
 
 	}
