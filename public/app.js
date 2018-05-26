@@ -12273,7 +12273,7 @@ document.addEventListener('scatterLoaded', scatterExtension => {
 });
 
 $("#welcome-done").on("click", function(){
-	$(".welcome-box").toggle();
+	$(".welcome-box").toggleClass("hide");
 })
 
 $("#loginbut").on('click', function() {

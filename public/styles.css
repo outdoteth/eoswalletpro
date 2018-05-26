@@ -74,6 +74,7 @@ html,body {
 }
 
 .welcome-box {
+	padding-left: 0;
 	background-color: white;
 	border-radius: 12px;
 	border-top: 6px solid;
@@ -95,8 +96,9 @@ html,body {
 	width: 100%;
 }
 
-.hide{
-	display: none !important;
+.hide {
+	display: none;
+	padding-left: 1px;
 }
 
 .show {
