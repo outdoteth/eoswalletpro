@@ -16,20 +16,29 @@ $("#loginbut").on('click', function() {
 	else { pub = ecc.privateToPublic(priv)
 	if (pub[0] === "E") {
 		console.log(pub);
-		account = $(".acct-login").val();
-		toggleHide(".login", false);
-		toggleHide(".main-wallet", true);
-		$.post('/pubtoacct', {account_target: account}, function(data){
-			if (data.account) {
-				console.log(data.account);
-				getInfo(account);
-				$("#account-name").text("Account: " + account);
+		account = $("#account-set").val();
+		$.post('/login', {pubkeys: pub, account: account}, function(data) {
+			if (data.login) {
+				console.log(pub);
+				toggleHide(".login", false);
+				toggleHide(".main-wallet", true);
+				$.post('/pubtoacct', {account_target: account}, function(data){
+					if (data.account) {
+						console.log(data.account);
+						getInfo(account);
+						$("#account-name").text("Account: " + account);
+					} else {
+						$("#error-account").toggleClass("hide");
+					};
+				}) 
+
 			} else {
-				$("#error-account").toggleClass("hide");
-			};
+				console.log("data.e");
+			}
 		})
-	} 
-}
+	}
+
+	}
 });
 
 
@@ -76,30 +85,39 @@ function getInfo(account_t) {
 	});
 }
 
+let isValid = true;
+
 $("#send-but").on("click", function() {
-	let _token = $("#selector").val()
-	let _to = $('#to').val();
-	let _amount = $('#amount').val() + " " + _token;
-	console.log(_amount);
-	$.post('/transaction', {from: account, to: _to, amount: _amount}, function(data, status) {
-		//signs serialized tx
-		let bufferOriginal = Buffer.from(JSON.parse(data.buf).data);
-		let packedTr = data.packedTr;
-		console.log(packedTr);
-		let sig = []
-		sig.push(ecc.sign(bufferOriginal, priv));
-		console.log(sig);
-		if (!data.e) {
-		
-			//sends sig back to server
-			$.post('/pushtransaction', {sigs: ecc.sign(bufferOriginal, priv), packedTr: packedTr}, function(data, status){
-				console.log(data);
-				toggleHide("#success", true);
-				$("#tx-id").text("Transaction Id: " + data.transaction_id);
-				setTimeout(function(){toggleHide("#success", false); getInfo(account);}, 4000);
-			});
-		}
-	})
+	if (isValid) {
+		isValid = false;
+		let _token = $("#selector").val()
+		let _to = $('#to').val();
+		let _amount = $('#amount').val() + " " + _token;
+		console.log(_amount);
+		console.log(account);
+		$.post('/transaction', {from: account, to: _to, amount: _amount, pubkeys: pub}, function(data, status) {
+			//signs serialized tx
+			let bufferOriginal = Buffer.from(JSON.parse(data.buf).data);
+			let packedTr = data.packedTr;
+			console.log(packedTr);
+			let sig = []
+			sig.push(ecc.sign(bufferOriginal, priv));
+			console.log(sig);
+			if (data) {
+			
+				//sends sig back to server
+				$.post('/pushtransaction', {sigs: ecc.sign(bufferOriginal, priv), packedTr: packedTr}, function(data, status){
+					console.log(data);
+					toggleHide("#success", true);
+					$("#tx-id").text("Transaction Id: " + data.transaction_id);
+					setTimeout(function(){toggleHide("#success", false); getInfo(account);}, 4000);
+				});
+			}
+		})
+		setTimeout(function(){isValid=true;}, 1000);
+	} else {
+		console.log("NEED TIMER");
+	}
 });
 
 $("#send-all").on("click", function(){

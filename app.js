@@ -1,8 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
-var Eos = require('./eosjs-new/eosjs/src/index');
-var eos = Eos.Testnet({httpEndpoint: 'http://dev.cryptolions.io:38888', keyProvider: '5K2KsDfwjTxCfJDprHSEkFGeQbgAWHPErju8ViuZ9SALw19FNW2'});
+var Eos = require('./eosjs-recent/src/index');
+var eos = Eos.Testnet({httpEndpoint: 'http://dev.cryptolions.io:38888', chainId: "a628a5a6123d6ed60242560f23354c557f4a02826e223bb38aad79ddeb9afbca"});
 
 
 
@@ -115,7 +115,21 @@ app.post('/pubtoacct', function(req, res){
 //----------------------- LOGIN WITH PUBLIC KEY ------------------------//
 
 app.post('/login', function(req, res, status){
-
+	let params = req.body;
+	let pubkey = req.body.pubkey
+	console.log("Request made!");
+	eos.getAccount(params.account).then(result1=>{
+		let required = result1.permissions[0].required_auth.keys[0].key;
+		console.log(required);
+		if (req.body.pubkeys === required) {
+			console.log("SUCCESS!")
+			res.send({login: true});
+			res.end();
+		} else {
+			res.send({e: "Error - key does not match account permissions"});
+			res.end();
+		}
+	}).catch(err=>{res.send({e: "Error - could not find account"}); res.end();});
 });
 
 //----------------------- LOGIN WITH PUBLIC KEY ------------------------//
@@ -151,21 +165,33 @@ app.post('/transaction', function(req, res, status) {
 
 	eos.getAccount(params.to).then(result1=>{
 		if (params.to && params.amount && result1.account_name) {
+			console.log("FINE!");
 			console.log(params.from);
-			console.log(result1.account_name);
-			eos.transfer(params.from, params.to, params.amount, "", {broadcast: false, sign: false}).then(result=>{
-				console.log(req.body);
-				let packedtr = result.transaction;
-				console.log(result.buffer);
-				console.log(result.transaction);
-				//let testsig = Eos.modules.ecc.sign(result.buffer, "5HwGj4jBXQgAQva8pFpTvnJGMicvciHDQPQhbszXYXHge8kZeB1");
-				let packedTr = JSON.stringify(packedtr);
-				let stringBuf = JSON.stringify(result.buffer);
-				res.send({buf: stringBuf, packedTr: packedTr});
-				res.end();
-			}).catch(err => {
-				console.log("ERROR transaction");
-			});
+			eos.getAccount(params.from).then(result2=>{
+				let required = result2.permissions[0].required_auth.keys[0].key;
+				if (req.body.pubkeys === required) {
+
+					console.log(params.from);
+					console.log(result1.account_name);
+						eos.transfer(params.from, params.to, params.amount, "", {broadcast: false, sign: false}).then(result=>{
+						console.log(req.body);
+						let packedtr = result.transaction;
+						console.log(result.buffer);
+						console.log(result.transaction);
+						//let testsig = Eos.modules.ecc.sign(result.buffer, "5HwGj4jBXQgAQva8pFpTvnJGMicvciHDQPQhbszXYXHge8kZeB1");
+						let packedTr = JSON.stringify(packedtr);
+						let stringBuf = JSON.stringify(result.buffer);
+						res.send({buf: stringBuf, packedTr: packedTr});
+						res.end();
+					}).catch(err => {
+						console.log("ERROR transaction");
+					});
+				} else {
+					res.send({e: "Error - key does not match accounts permissions"});
+				}
+
+			})
+
 		} else {
 			res.send({e: "error"});
 			res.end();
