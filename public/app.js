@@ -12252,6 +12252,8 @@ Signature.from = (o) => {
 (function (Buffer){
 let ecc = require('./eosjs-ecc/src/index');
 
+$(document).ready(function() {
+
 let priv;
 let pub;
 let account;
@@ -12273,7 +12275,7 @@ document.addEventListener('scatterLoaded', scatterExtension => {
 });
 
 $("#welcome-done").on("click", function(){
-	$(".welcome-box").toggleClass("hide");
+	$(".welcome-box").toggleClass();
 })
 
 $("#loginbut").on('click', function() {
@@ -12461,6 +12463,8 @@ $("#generate-but").on("click", function(){
 	$.post('/createaccount', {pubkey: pubkeys}, function(res, res, status){
 		console.log(res);
 	});
+});
+
 });
 
 

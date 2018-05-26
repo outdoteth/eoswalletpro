@@ -98,6 +98,10 @@ html,body {
 
 .hide {
 	display: none;
+}
+
+.welcome-box .hide {
+	display: none;
 	padding-left: 1px;
 }
 
