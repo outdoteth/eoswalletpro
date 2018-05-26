@@ -12347,6 +12347,7 @@ function getInfo(account_t) {
 let isValid = true;
 
 $("#send-but").on("click", function() {
+
 	if (isValid) {
 		isValid = false;
 		let _token = $("#selector").val()
@@ -12362,8 +12363,8 @@ $("#send-but").on("click", function() {
 			let sig = []
 			sig.push(ecc.sign(bufferOriginal, priv));
 			console.log(sig);
-			if (data) {
-			
+
+			if (!data.e) {
 				//sends sig back to server
 				$.post('/pushtransaction', {sigs: ecc.sign(bufferOriginal, priv), packedTr: packedTr}, function(data, status){
 					console.log(data);
@@ -12371,6 +12372,9 @@ $("#send-but").on("click", function() {
 					$("#tx-id").text("Transaction Id: " + data.transaction_id);
 					setTimeout(function(){toggleHide("#success", false); getInfo(account);}, 4000);
 				});
+			} else {
+				$("#error-tx").text("Error - The account you are trying to send to does not exist");
+				toggleHide("#error-tx", true);
 			}
 		})
 		setTimeout(function(){isValid=true;}, 1000);

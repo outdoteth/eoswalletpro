@@ -185,15 +185,18 @@ app.post('/transaction', function(req, res, status) {
 						res.end();
 					}).catch(err => {
 						console.log("ERROR transaction");
+						res.send({e: "ERROR"});
+						res.end();
 					});
 				} else {
 					res.send({e: "Error - key does not match accounts permissions"});
+					res.end();
 				}
 
 			})
 
 		} else {
-			res.send({e: "error"});
+			res.send({e: "Error - The account you are trying to send to does not exit"});
 			res.end();
 		}
 	}).catch(err=>{res.send({e: "error"}); res.end();});
