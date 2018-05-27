@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
-var Eos = require('./eosjs/src/index');
+var Eos = require('./eos-live/src/index');
 var eos = Eos.Testnet({httpEndpoint: 'http://dev.cryptolions.io:38888', chainId: "a628a5a6123d6ed60242560f23354c557f4a02826e223bb38aad79ddeb9afbca"});
 
 
