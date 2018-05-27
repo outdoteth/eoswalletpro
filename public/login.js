@@ -5,26 +5,60 @@ $(document).ready(function() {
 let priv;
 let pub;
 let account;
+let foundScatter = false;
+let scatter;
 
 document.addEventListener('scatterLoaded', scatterExtension => {
     // Scatter will now be available from the window scope.
     // At this stage the connection to Scatter from the application is 
     // already encrypted. 
-    const scatter = window.scatter;
+    scatter = window.scatter;
+    foundScatter = true;
     
     // It is good practice to take this off the window once you have 
     // a reference to it.
     window.scatter = null;
+
      
     // If you want to require a specific version of Scatter
-    scatter.requireVersion(3.0);
     
     //...
 });
 
+/*$("#scatter-unlock").on("click", function(){
+	if(foundScatter) {
+		console.log("HELLO!");
+
+
+		//returns public key
+		scatter.getIdentity().then(identity => {
+			let publickey = identity.publickey;
+			$.post('/pubtoacct', {publick})
+    	}).catch(err => {console.log(err)});
+
+
+
+    	//post request to get public key to account
+
+
+    	//take to next page
+    	//set signWithScatter to 'true'
+
+
+    	//THEN write if(signWithScatter){scatter.sign(buf)};
+
+	} else {
+		console.log("FAIL!");
+	}
+})*/
+
 $("#welcome-done").on("click", function(){
-	$(".welcome-box").toggleClass();
-})
+	$(".welcome-box").toggleClass("hide");
+});
+
+$("#qr-but").on("click", function(){
+	getInfo(account);
+});
 
 $("#loginbut").on('click', function() {
 	priv = $('#privkey').val();
@@ -36,11 +70,35 @@ $("#loginbut").on('click', function() {
 	if (pub[0] === "E") {
 		console.log(pub);
 		account = $("#account-set").val();
-		if (account.length !== 12) {
+		/*if (account.length !== 12) {
 			$("#error-account").text("Error - Due to the new Dawn 4.2.0 standard, account names must now be exactly 12 characters long");
 			toggleHide("#error-account", true);
-		} else {
-		$.post('/login', {pubkeys: pub, account: account}, function(data) {
+		} else {*/
+		$.post('/getkeyaccount', {pubkey: pub}, function(data){
+			if (data.accounts) {
+				let account_arr = data.accounts;
+				toggleHide("#account-pick-box", true);
+				$("#account-list").empty();
+				if (account_arr.length >= 1){
+								toggleHide("#no-account", false);
+								for (let i = 0; i < account_arr.length; i++) {
+									$("#account-list").append(`<li class="lili" id=${account_arr[i]}>${account_arr[i]} <button class='button-blue pick-account-buts'>Use This Account</button></li>`);
+									$(`#${account_arr[i]}`).on("click", function(){
+										toggleHide(".login", false);
+										toggleHide(".main-wallet", true);
+										toggleHide("#account-pick-box", false);
+										$("#account-name").text(`Account: ${account_arr[i]}`);
+										console.log(account_arr[i]);
+										getInfo(account_arr[i]);
+										account = account_arr[i];
+									});
+								}
+							} else {
+
+							}
+			}
+		});
+		/*$.post('/login', {pubkeys: pub, account: account}, function(data) {
 			if (data.login) {
 				console.log(pub);
 				toggleHide(".login", false);
@@ -59,13 +117,16 @@ $("#loginbut").on('click', function() {
 				$("#error-account").text("Error - Private key does not match account permissions");
 				toggleHide("#error-account", true);
 			}
-		})
-	}
+		})*/
+	//}
 	}
 
 	}
 });
 
+$("#x-account").on("click", function(){
+	toggleHide("#account-pick-box", false);
+})
 
 $("#cross").on("click", function(){
 	toggleHide(".create-box", false);

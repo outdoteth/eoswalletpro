@@ -9,18 +9,20 @@
 </head>
 
 <body>
+
+
 	<div class="lookup-box hide">
 		<h1 class="lookup-tit">Lookup Account</h1>
 		<form id="lookup-form">
-			<input type="text" placeholder="Enter account name. E.g. 'eosio'" class="lookup-dimensions lookup-val">
-			<input type="button" value="LOOKUP ACCOUNT" class="lookup-but button-green">
+			<input type="text" placeholder="Enter account name. E.g. 'eosio'" class="lookup-val">
+			<input type="button" value="Lookup Account" class="lookup-but button-green">
 		</form>
 		<h3 class="left-lookup" id="account-name-lookup">Account name: </h3>
 		<h3 class="left-lookup" id="balance-lookup">Balance: </h3>
 		<h3 class="left-lookup" id="ram-lookup">Ram quota: </h3>
 		<h3 class="left-lookup" id="bandwidth-lookup">Delegated bandwidth: </h3>
 		<h3 class="left-lookup" id="creation-lookup">Creation date: </h3>
-		<button id="lookup-done" class="button-green">DONE</button>
+		<button id="lookup-done" class="button-green">Done</button>
 	</div>
 
 	<div class="welcome-box">
@@ -49,8 +51,7 @@
 			<h2 id="error-account" class="hide">Error: You either entered an invalid account or your private key does not match account permissions</h2>
 			<h2 class="unlock-title">Unlock Wallet</h2>
 			<div id="x">
-				<input type="text" name="account-set" placeholder="Enter account" id="account-set" class="acct-login" autocomplete="nope">
-				<input type="text" autocomplete="off" name="privKey" placeholder="Enter your 'active' private key" id="privkey" class="priv-login">
+				<input type="text" autocomplete="off" name="privKey" placeholder="Enter your 'active' private key" id="privkey" class="login-dimensions">
 				<input type="button" value="UNLOCK" id="loginbut" class="login-buts">
 				<input type="button" value="SCATTER" id="scatter-unlock">
 			</div>
@@ -105,6 +106,14 @@
 	</div>
 	</div>
 
+	<div id="account-pick-box" class="hide">
+		<h1 id="no-account">Uh oh... It looks like you haven't created any accounts yet. <br><br>Click <a onclick="window.open('http://dev.cryptolions.io/#account','_blank');" style="color: blue; text-decoration: underline; cursor:pointer">here</a> to generate an account.</h1>
+		<h1 id="x-account">X</h1>
+		<h1 id="pick-account">Please pick an account</h1>
+		<ul id="account-list">
+		</ul>
+	</div>
+
 	<!------------------------------------------------------------------------------->
 
 	<!--------------------------------- MAIN WALLET --------------------------------->
@@ -118,7 +127,7 @@
 			<h1 id="account-name" class="account-names">dylan</h1>
 			<h1 id="balance-head" class="account-names">Balance: <button id="get-coins" class="button-green" onclick="window.open('http://dev.cryptolions.io/#faucet','_blank');">Get Coins</button> </h1>
 			<h1 id="ram-head" class="account-names">Ram: 99283</h1>
-			<button id="qr-but" class="account-names button-blue">QR Address</button>
+			<button id="qr-but" class="account-names button-blue">Query Balance</button>
 		</div>
 
 		<div id="send-box" class="box">

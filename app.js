@@ -1,7 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
-var Eos = require('./eosjs-recent/src/index');
+var Eos = require('./eosjs/src/index');
 var eos = Eos.Testnet({httpEndpoint: 'http://dev.cryptolions.io:38888', chainId: "a628a5a6123d6ed60242560f23354c557f4a02826e223bb38aad79ddeb9afbca"});
 
 
@@ -59,6 +59,18 @@ app.listen(port, function() {
 	console.log(`Listening on port ${port}`);
 });
 
+app.post('/getkeyaccount', function(req, res, status){
+	let params = req.body;
+	eos.getKeyAccounts(params.pubkey).then(result1=>{
+		let accounts = result1.account_names;
+		console.log(accounts);
+		res.send({accounts: accounts});
+		res.end();
+	}).catch(err=>{
+		res.send({e: "Error"});
+		res.end();
+	});
+});
 
 app.post('/lookupacct', function(req, res, status){
 	console.log(req.body);
@@ -85,6 +97,7 @@ app.post('/getbalance', function (req, res){
 app.post('/pubtoacct', function(req, res){
 	//let pub = req.body.pubkey;
 	//eos.getaccounts(pub).then(accountRes => {});
+	console.log(req.body)
 	eos.getAccount(req.body.account_target).then(result=>{
 		let ram_quota = result.ram_quota;
 		let ram_usage = result.ram_usage;
@@ -162,6 +175,7 @@ app.post('/createaccount', function(req, res, status) {
 
 app.post('/transaction', function(req, res, status) {
 	let params = req.body;
+	console.log(req.body);
 
 	eos.getAccount(params.to).then(result1=>{
 		if (params.to && params.amount && result1.account_name) {
