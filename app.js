@@ -178,7 +178,7 @@ app.post('/transaction', function(req, res, status) {
 	console.log(req.body);
 
 	eos.getAccount(params.to).then(result1=>{
-		if (params.to && params.amount && result1.account_name) {
+		if (params.to && params.amount && result1.account_name && result1.cpulimit > 800) {
 			console.log("FINE!");
 			console.log(params.from);
 			eos.getAccount(params.from).then(result2=>{
