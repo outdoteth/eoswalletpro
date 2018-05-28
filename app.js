@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
 var Eos = require('./eos-live/src/index');
-var eos = Eos.Testnet({httpEndpoint: 'http://dev.cryptolions.io:38888', chainId: "a628a5a6123d6ed60242560f23354c557f4a02826e223bb38aad79ddeb9afbca"});
+var eos = Eos.Testnet({httpEndpoint: 'http://192.99.200.155:8888', chainId: "a628a5a6123d6ed60242560f23354c557f4a02826e223bb38aad79ddeb9afbca"});
 
 
 
@@ -80,7 +80,8 @@ app.post('/lookupacct', function(req, res, status){
 		let created = result.created;
 		let ram = result.ram_quota;
 		let bandwidth = result.delegated_bandwidth;
-		res.send({account: account, created: created, ram: ram, bandwidth: bandwidth});
+		let keyreturn = result.permissions[0].required_auth.keys[0].key;
+		res.send({account: account, created: created, ram: ram, bandwidth: bandwidth, pubkey: keyreturn});
 		res.end();
 	}).catch(function(){res.send({error: "error"}); res.end()});
 });
@@ -105,10 +106,13 @@ app.post('/pubtoacct', function(req, res){
 		let cpu_limit = result.cpu_limit.available; 
 		let created = result.created;
 		let account = result.account_name;
+		let requiredkey = result.permissions[0].required_auth.keys[0].key;
+		console.log(requiredkey)
 		if (result.account_name) {
 			eos.getTableRows({code: 'eosio.token', scope: req.body.account_target, table: 'accounts', json: true}).then(result2=>{
 				let balances = result2;
 				res.send({
+					returnkey: requiredkey,
 					account: account,
 					balances: {balances: balances},
 					ram_quota: ram_quota,
@@ -136,7 +140,7 @@ app.post('/login', function(req, res, status){
 		console.log(required);
 		if (req.body.pubkeys === required) {
 			console.log("SUCCESS!")
-			res.send({login: true});
+			res.send({login: true, returnkey: required});
 			res.end();
 		} else {
 			res.send({e: "Error - key does not match account permissions"});

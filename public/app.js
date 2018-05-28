@@ -1709,7 +1709,7 @@ module.exports={
   "_args": [
     [
       "bigi@1.4.2",
-      "/Users/levi/Desktop/fa/public/eosjs-ecc"
+      "/Users/levi/Desktop/eoswalletpro/eosjs-ecc"
     ]
   ],
   "_from": "bigi@1.4.2",
@@ -1734,7 +1734,7 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/bigi/-/bigi-1.4.2.tgz",
   "_spec": "1.4.2",
-  "_where": "/Users/levi/Desktop/fa/public/eosjs-ecc",
+  "_where": "/Users/levi/Desktop/eoswalletpro/eosjs-ecc",
   "bugs": {
     "url": "https://github.com/cryptocoinjs/bigi/issues"
   },
@@ -11154,8 +11154,8 @@ function getName(fn) {
   return match ? match[1] : null
 }
 
-}).call(this,{"isBuffer":require("../../../../../../../usr/local/lib/node_modules/browserify/node_modules/is-buffer/index.js")})
-},{"../../../../../../../usr/local/lib/node_modules/browserify/node_modules/is-buffer/index.js":75}],59:[function(require,module,exports){
+}).call(this,{"isBuffer":require("../../../../../../../../usr/local/lib/node_modules/browserify/node_modules/is-buffer/index.js")})
+},{"../../../../../../../../usr/local/lib/node_modules/browserify/node_modules/is-buffer/index.js":75}],59:[function(require,module,exports){
 const createHash = require('create-hash')
 const createHmac = require('create-hmac')
 
@@ -11393,12 +11393,11 @@ PrivateKey.fromBuffer = function(buf) {
     if (!Buffer.isBuffer(buf)) {
         throw new Error("Expecting parameter to be a Buffer type");
     }
-    if(buf.length === 33 && buf[32] === 1) {
-      // remove compression flag
-      buf = buf.slice(0, -1)
-    }
     if (32 !== buf.length) {
-      throw new Error(`Expecting 32 bytes, instead got ${buf.length}`);
+        console.log(`WARN: Expecting 32 bytes, instead got ${buf.length}, stack trace:`, new Error().stack);
+    }
+    if (buf.length === 0) {
+        throw new Error("Empty buffer");
     }
     return PrivateKey(BigInteger.fromBuffer(buf));
 }
@@ -12259,6 +12258,7 @@ let pub;
 let account;
 let foundScatter = false;
 let scatter;
+let scatterUnlocked = false;
 
 document.addEventListener('scatterLoaded', scatterExtension => {
     // Scatter will now be available from the window scope.
@@ -12270,23 +12270,47 @@ document.addEventListener('scatterLoaded', scatterExtension => {
     // It is good practice to take this off the window once you have 
     // a reference to it.
     window.scatter = null;
-
      
     // If you want to require a specific version of Scatter
     
     //...
 });
 
-/*$("#scatter-unlock").on("click", function(){
+$("#scatter-unlock").on("click", function() {
 	if(foundScatter) {
 		console.log("HELLO!");
 
 
 		//returns public key
-		scatter.getIdentity().then(identity => {
-			let publickey = identity.publickey;
-			$.post('/pubtoacct', {publick})
-    	}).catch(err => {console.log(err)});
+		scatter.getIdentity({accounts:[{blockchain:'eos', host:'http://192.99.200.155', port:8888, chainId: "a628a5a6123d6ed60242560f23354c557f4a02826e223bb38aad79ddeb9afbca"}]}).then(identity => {
+			console.log("blabla")
+			console.log(identity);
+			console.log(pub);
+			console.log(scatter.identity);
+			if (identity.accounts) {
+				let account_arr = identity.accounts;
+				toggleHide("#account-pick-box", true);
+				$("#account-list").empty();
+				if (account_arr.length >= 1){
+					toggleHide("#no-account", false);
+					for (let i = 0; i < account_arr.length; i++) {
+						$("#account-list").append(`<li class="lili" id=${account_arr[i].name}>${account_arr[i].name} <button class='button-blue pick-account-buts'>Use This Account</button></li>`);
+						$(`#${account_arr[i].name}`).on("click", function(){
+							toggleHide(".login", false);
+							scatterUnlocked = true;
+							toggleHide(".main-wallet", true);
+							toggleHide("#account-pick-box", false);
+							$("#account-name").text(`Account: ${account_arr[i].name}`);
+							console.log(account_arr[i].name);
+							getInfo(account_arr[i].name);
+							account = account_arr[i].name;
+						});
+					}
+					} else {
+
+				}
+			}
+    	}).catch(err => {console.log("err")});
 
 
 
@@ -12302,7 +12326,7 @@ document.addEventListener('scatterLoaded', scatterExtension => {
 	} else {
 		console.log("FAIL!");
 	}
-})*/
+})
 
 $("#welcome-done").on("click", function(){
 	$(".welcome-box").toggleClass("hide");
@@ -12311,6 +12335,8 @@ $("#welcome-done").on("click", function(){
 $("#qr-but").on("click", function(){
 	getInfo(account);
 });
+
+
 
 $("#loginbut").on('click', function() {
 	priv = $('#privkey').val();
@@ -12396,6 +12422,7 @@ function getInfo(account_t) {
 		let balanceArray = data.balances.balances.rows;
 		let eosBalanceI = balanceArray[0].balance.split(' ');
 		eosBalance = eosBalanceI[0];
+		pub = data.returnkey;
 
 		console.log(data);
 		$("#cpu-limit").text("CPU limit: " + data.cpu_limit);
@@ -12411,10 +12438,9 @@ function getInfo(account_t) {
 				let tokenTarget = balanceArray[i].balance.split(' ');
 				$("#selector").append(`<option value=${tokenTarget[1]}>${tokenTarget[1]}</option>`)
 				if (i % 2 === 0){
-					$("#column2").append(`<li id=${i}>${balanceArray[i].balance} <button class='button-blue column-but'>Trade</button></li>`);
+					$("#column2").append(`<li id=${i} class=${tokenTarget[1]}  value=${i}>${balanceArray[i].balance} <button class='button-blue column-but'>Trade</button></li>`);
 				} else {
-					$("#column1").append(`<li id=${i}>${balanceArray[i].balance} <button class='button-blue column-but'>Trade</button></li>`);
-				} count = 0; count += balanceArray.length
+					$("#column1").append(`<li id=${i} class=${tokenTarget[1]} value=${i}>${balanceArray[i].balance} <button class='button-blue column-but'>Trade</button></li>`);				} count = 0; count += balanceArray.length
 			} else {
 				$(`#${i}`).text(`${balanceArray[i].balance}`);
 				$(`#${i}`).append(`<button class='button-blue column-but'>Trade</button>`);
@@ -12423,14 +12449,94 @@ function getInfo(account_t) {
 	});
 }
 
+//toggleHide("#0", false);
+
 let isValid = true;
 
 $("#send-but").on("click", function() {
+	if (scatterUnlocked) {
+		if (isValid) {
+		isValid = false;
+		let _token = $("#selector").val()
+		let _to = $('#to').val();
+		let _amountInput = $('#amount').val();
+		let _amountCheck = $(`.${_token}`);
+		let stringNum = _amountCheck.text();
+		console.log(stringNum);
+		let checkNumArr = stringNum.split(" ");
+		console.log(checkNumArr);
+		let _amountAgainst = Number(checkNumArr[0]);
+
+		console.log(_amountAgainst);
+
+		//if (_amountInput <= _amountAgainst) {
+
+		let _amount = $('#amount').val() + " " + _token;
+		console.log(_amount);
+		console.log(account);
+		$.post('/transaction', {from: account, to: _to, amount: _amount, pubkeys: pub}, function(data, status) {
+			//signs serialized tx
+			let bufferOriginal = Buffer.from(JSON.parse(data.buf).data);
+			let packedTr = data.packedTr;
+			console.log(packedTr);
+			//let sig = []
+			//sig.push(ecc.sign(bufferOriginal, priv));
+			//console.log(sig);
+
+			if (!data.e) {
+				console.log(pub);
+				scatter.getArbitrarySignature(
+					pub, 
+					bufferOriginal, 
+					whatfor = 'Sign Transaction', 
+					isHash = false
+				).then(result3=>{
+
+					$.post('/pushtransaction', {sigs: result3, packedTr: packedTr}, function(data, status){
+						console.log(data);
+						toggleHide("#success", true);
+						$("#tx-id").text("Transaction Id: " + data.transaction_id);
+						setTimeout(function(){isValid=true;}, 1000);
+						setTimeout(function(){toggleHide("#success", false); getInfo(account);}, 4000);
+					});
+
+
+					console.log(result3)
+
+				});
+
+				//sends sig back to server
+
+			} else {
+				$("#error-tx").text("Error - The account you are trying to send to does not exist");
+				toggleHide("#error-tx", true);
+			}
+		})
+		
+	
+	//} else {
+		console.log("NEED TIMER");
+	//}
+			
+		}
+	} else {
 
 	if (isValid) {
 		isValid = false;
 		let _token = $("#selector").val()
 		let _to = $('#to').val();
+		let _amountInput = $('#amount').val();
+		let _amountCheck = $(`.${_token}`);
+		let stringNum = _amountCheck.text();
+		console.log(stringNum);
+		let checkNumArr = stringNum.split(" ");
+		console.log(checkNumArr);
+		let _amountAgainst = Number(checkNumArr[0]);
+
+		console.log(_amountAgainst);
+
+		//if (_amountInput <= _amountAgainst) {
+
 		let _amount = $('#amount').val() + " " + _token;
 		console.log(_amount);
 		console.log(account);
@@ -12457,9 +12563,14 @@ $("#send-but").on("click", function() {
 			}
 		})
 		setTimeout(function(){isValid=true;}, 1000);
-	} else {
-		console.log("NEED TIMER");
+	//} else {
+		//console.log("NEED TIMER");
+	//}
+			
+		}
+
 	}
+
 });
 
 $("#send-all").on("click", function(){
