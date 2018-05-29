@@ -31,6 +31,50 @@
 	z-index: 100;
 }
 
+#offline-success {
+	position: absolute;
+	text-align: center;
+	left: 50%;
+	transform: translate(-50%);
+	top: 75%;
+	font-size: 12px;
+	color: #00DF80;
+	width: 100%;
+}
+
+#offline-error {
+	position: absolute;
+	text-align: center;
+	left: 50%;
+	transform: translate(-50%);
+	top: 75%;
+	font-size: 12px;
+	color: #FF004E;
+	width: 100%;
+}
+
+#generate-success {
+	position: absolute;
+	text-align: center;
+	left: 50%;
+	transform: translate(-50%);
+	top: 75%;
+	font-size: 12px;
+	color: #00DF80;
+	width: 100%;
+}
+
+#generate-error {
+	position: absolute;
+	text-align: center;
+	left: 50%;
+	transform: translate(-50%);
+	top: 75%;
+	font-size: 12px;
+	color: #FF004E;
+	width: 100%;
+}
+
 #pick-account {
 	position: absolute;
 	left: 50%;
@@ -172,6 +216,167 @@ html,body {
 	width: 800px;
 	z-index: 700;
 }
+
+.offline-tx-box {
+	background-color: white;
+	border-radius: 12px;
+	box-shadow: 0px 0px 300px 200px rgba(0,0,0,0.3);
+	position: absolute;
+	left: 50%;
+	top: 170px;
+	transform: translate(-50%);
+	height: 500px;
+	width: 800px;
+	z-index: 700;
+}
+
+#offline-1-tit {
+	position: absolute;
+	left: 50%;
+	top: 15px;
+	transform: translate(-50%);
+	width: 100%;
+	text-align: center;
+}
+
+.offline-1-exp {
+	position: absolute;
+	left: 50%;
+	font-size: 15px;
+	top: 118px;
+	transform: translate(-50%);
+	width: 80%;
+	text-align: justify;
+}
+
+#offline-3-exp {
+	font-size: 15px;
+	top: 95px;
+	width: 80%;
+	text-align: center;
+}
+
+.offline-4-exp {
+	font-size: 15px;
+	top: 88px;
+	width: 80%;
+	text-align: center;
+}
+
+#start-offline {
+	font-size: 12px;
+	position: absolute;
+	left: 1%;
+	top: -38px;
+}
+
+#start-offline:hover {
+	border-bottom: 3px solid #0072FF;
+	cursor: pointer;
+}
+
+#offline-2-exp {
+	font-size: 15px;
+	top: 95px;
+	width: 80%;
+	text-align: center;
+}
+
+.offline-next {
+	position: absolute;
+	bottom: 5%;
+	right: 10%;
+	width: 240px;
+	height:50px;
+}
+
+.offline-cancel {
+	background-color: none;
+	border-color: grey;
+	border-width: 2px;
+	color: grey;
+	border-radius: 7px;
+	font-size: 14px;
+	outline: none;
+	font-family: sans-serif;
+	position: absolute;
+	bottom: 5%;
+	left: 10%;
+	width: 180px;
+	height:50px;
+}
+
+.offline-cancel:hover {
+	cursor: pointer;
+	background-color: #F2F4F7;
+}
+
+#offline-1-exp {
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%);
+	top: 90px;
+}
+
+#gen-offline-but {
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%);
+	top: 400px;
+}
+
+#offline-form {
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%);
+	top: 150px;
+}
+
+.offline-x {
+	margin: 10px 0px;
+}
+
+#transaction-params {
+	position: absolute;
+	left: 50%;
+	transform: translate(-50%);
+	top: 250px;
+}
+
+#your-tx {
+	text-align: center;
+	top: 200px;
+}
+
+
+#offline-broadcast {
+	height: 45px;
+	width: 400px;
+	top: 340px;
+}
+
+#raw-tx-show {
+	background-color: lightgrey;
+	border-radius: 9px;
+	height: 120px;
+	width: 400px;
+	top: 210px;
+	overflow-x: scroll;
+}
+
+.your-tx {
+	top: 160px;
+}
+
+#raw-tx-text {
+	font-family: menlo;
+	font-size: 12px;
+	position: absolute;
+	left: 5%;
+	width: 90%;
+	color: #4C4C4C;
+}
+
 
 .left-lookup {
 	position: absolute;

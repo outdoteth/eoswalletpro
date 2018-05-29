@@ -10,6 +10,56 @@
 
 <body>
 
+	<div class="offline-tx-box offline-1st hide">
+		<h1 id="offline-1-tit">Offline Transaction</h1>
+		<h3 class="offline-1-exp">Sending an offline transaction will take three steps. The first step will include generating a transaction, the second step will include signing the transaction and the third step will include broadcasting the transaction. <br><br>For steps one and two, you will need to connect to the internet. For the second step, you can disconnect from the internet - this means that you will be able enter your private key offline. <br><br>After the signature is generated your private key will be deleted from the browser - then you can go back online with reassurance that you have not accidentally entered a phishing site, our servers have not been compromised or, are being attacked.</h3>
+		<button class="1-but offline-next button-green">Okay, let's begin</button>
+		<button class="offline-cancel">Cancel</button>
+	</div>
+
+	<div class="offline-tx-box offline-2nd hide">
+		<h1 id="offline-1-tit">Step 1: Generate Transaction</h1>
+		<h3 id="offline-3-exp" class="center">For this step you will need to still be connected to the internet.</h3>
+		<form id="offline-form">
+			From Account<input id="offline-from" class="login-dimensions offline-x"type="text" placeholder="Enter account you are sending from - e.g. 'pablopiccasso'">
+			To Account<input id="offline-to" type="text" class="login-dimensions offline-x" placeholder="Enter account you are sending to - e.g. 'libertylion1'">
+			Amount<input id="offline-amount" class="login-dimensions offline-x" type="text" placeholder="Enter the amount you are sending + the token symbol - e.g. '3.56 EOS'">
+		</form>
+		<button  id="generate-tx-offline-but" class="2-but offline-next button-green">Generate Transaction</button>
+		<h3 id="generate-success" class="hide">Success - Tranasaction generated!</h3>
+		<h3 id="generate-error" class="hide"></h3>
+		<button class="offline-cancel">Cancel</button>
+	</div>
+
+	<div class="offline-tx-box offline-3rd hide">
+		<h1 id="offline-1-tit">Step 2: Sign Transaction</h1>
+		<h3 id="offline-2-exp" class="center">Okay, now you can disconnect from the internet.</h3>
+		<form id="offline-form" autocomplete="off">
+			<input id="offline-private" autocomplete="off" class="login-dimensions" type="text" placeholder="Enter the private key that is associated with the account you are sending from">
+		</form>
+		<h3 id="your-tx" class="center">Your Transaction</h3>
+		<div id="transaction-params">
+			<h3 id="offline-from-dis"></h3>
+			<h3 id="offline-to-dis"></h3>
+			<h3 id="offline-amount-dis"></h3>
+		</div>
+		<button class="3-but offline-next button-green">Sign Transaction</button>
+		<button class="offline-cancel">Cancel</button>
+	</div>
+
+	<div class="offline-tx-box offline-4th hide">
+		<h1 id="offline-1-tit">Step 3: Broadcast Transaction</h1>
+		<h3 class="center offline-4-exp">Your private key has been erased from your session. All that's left to do is broadcast your transaction. If you entered the correct required required key, your transaction should be sent and confirmed within 0.5-1.5 seconds. You will have to reconnect to the internet for this step.</h3>
+		<h4 class="center your-tx">Your Raw Transaction</h1>
+		<div id="raw-tx-show" class="center">
+			<p id="raw-tx-text">Your private key has been erased from your session. All that's left to do is broadcast your transaction. If you entered the correct required required key, your transaction should be sent and confirmed within 0.5-1.5 seconds. You will have to reconnect to the internet for this step.Your private key has been erased from your session. All that's left to do is broadcast your transaction. If you entered the correct required required key, your transaction should be sent and confirmed within 0.5-1.5 seconds. You will have to reconnect to the internet for this step</p>
+		</div>
+		<button id="offline-broadcast" class="button-blue center">Broadcast Transaction</button>
+		<h3 id="offline-success" class="hide"></h3>
+		<h3 id="offline-error" class="hide"></h3>
+		<button class="4-but offline-next button-green">Finish</button>
+		<button class="offline-cancel">Cancel</button>
+	</div>
 
 	<div class="lookup-box hide">
 		<h1 class="lookup-tit">Lookup Account</h1>
@@ -25,7 +75,7 @@
 		<button id="lookup-done" class="button-green">Done</button>
 	</div>
 
-	<div class="welcome-box">
+	<div class="welcome-box hide">
 		<h1 class="lookup-tit">Welcome!</h1>
 		<div id="x-box">
 			<h1 id="jungle-test"><b id="note">Please note:</b> eoswalletpro is not running on the mainnet! We are currently live on "JUNGLE testnet" - a community testnet that is using v4.2.0 of Dawn. On behalf of the whole <em>Hashbit</em> team, we would like to say a huge thanks to <em>Block.One</em>, <em>Scatter</em> and the community for developing the software necessary for eoswalletpro to run properly!</h1>
@@ -42,6 +92,7 @@
 	<div class="login show">
 	<header id="header"><div id="header-box"><h1 id="hashbit-text">HASHBIT</h1><h1 id="eos-price">1 EOS: <%= price%> USD</h1></div></header>
 	<div id="login-box">
+		<h3 id="start-offline">Offline Transaction</h3>
 		<div id="telegram1"><button id="telegram" class="button-blue" onclick="window.open('https://t.me/eoswalletpro','_blank');">Join us on Telegram</button></div>
 		<div id="twitter1"><button id="twitter" class="button-blue" onclick="window.open('https://twitter.com/eoswalletpro','_blank');">Twitter</button></div>
 		<div class="login-inputs">
@@ -81,7 +132,7 @@
 		</div>
 		<div class="extra-buttons">
 			<div class="button-pos">
-				<button class="how-buttons how button-blue">How does EWP work?</button>
+				<button class="how-buttons how button-blue" onclick="window.open('https://www.youtube.com/watch?v=pc26kanG2fo','_blank');">How do I use Scatter?</button>
 				<button class="how-buttons explorer button-blue">Explorer</button>
 				<button class="how-buttons what-is button-blue">What is Eos?</button>
 			</div>

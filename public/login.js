@@ -25,13 +25,101 @@ document.addEventListener('scatterLoaded', scatterExtension => {
     //...
 });
 
+$("#start-offline").on("click", function(){
+	toggleHide(".offline-1st", true);
+})
+
+$(".1-but").on("click", function(){
+	console.log("x");
+	toggleHide(".offline-1st", false);
+	toggleHide(".offline-2nd", true);
+});
+
+let offlinesignbuf;
+let offlinesig;
+let offlinepackedTr;
+
+$("#generate-tx-offline-but").on("click", function(){
+	let from = $("#offline-from").val();
+	let to = $("#offline-to").val();
+	let amount = $("#offline-amount").val();
+	let splitCheck = amount.split(" ");
+	$("#offline-from-dis").text("From Account: " + from);
+	$("#offline-to-dis").text("To Account: " + to);
+	$("#offline-amount-dis").text("Amount: " + amount);
+	if (from.length !== 12 || to.length !== 12) {
+		$("#generate-error").text("Error - Due to the new Dawn4.2.0 standard accounts must be exactly 12 characters long");
+		toggleHide("#generate-error", true);
+	} else if (splitCheck.length !== 2) {
+		$("#generate-error").text("Error - Please include a space between the amount and the token name e.g. '1 EOS' or '2.36 JUNGLE'");
+		toggleHide("#generate-error", true);
+	} else {
+		$.post('/transaction', {from: from, to: to, amount: amount}, function(data, status) {
+			//signs serialized tx
+			if (data.packedTr) {
+					offlinesignbuf = Buffer.from(JSON.parse(data.buf).data);
+					offlinepackedTr = data.packedTr;
+					console.log(offlinepackedTr);
+					$("#raw-tx-text").text(offlinepackedTr);
+					toggleHide(".offline-2nd", false);
+					toggleHide(".offline-3rd", true);
+				} else if (data.e) {
+					$("#generate-error").text("Error - " + data.e);
+					toggleHide("#generate-error", true);
+				} else {
+					$("#generate-error").text(data.e);
+				}
+		});
+	}
+});
+
+$(".3-but").on("click", function(){
+	let offlinepriv = $("#offline-private").val();
+	offlinesig = ecc.sign(offlinesignbuf, offlinepriv);
+	toggleHide(".offline-3rd", false);
+	toggleHide(".offline-4th", true);
+});
+
+
+$("#offline-broadcast").on("click", function(){
+	$.post('/pushtransaction', {sigs: offlinesig, packedTr: offlinepackedTr}, function(data){
+		console.log(data);
+		if (data.transaction_id) {
+			toggleHide("#offline-success", true);
+			$("#offline-success").text("Tx Id - " + data.transaction_id);
+		} else {
+			toggleHide("#offline-error", true);
+			$("#offline-error").text("Error - " + data.e);
+		}
+	});
+});
+
+$(".offline-cancel").on("click", function(){
+	toggleHide(".offline-tx-box", false);
+});
+
+$(".4-but").on("click", function(){
+	toggleHide(".offline-tx-box", false);
+})
+
+
+
+
 $("#scatter-unlock").on("click", function() {
 	if(foundScatter) {
 		console.log("HELLO!");
+		/*const network = {
+		    blockchain:'eos',
+		    host:'http://192.99.200.155', // ( or null if endorsed chainId )
+		    port:8888, // ( or null if defaulting to 80 )
+		    chainId:"a628a5a6123d6ed60242560f23354c557f4a02826e223bb38aad79ddeb9afbca", // Or null to fetch automatically ( takes longer )
+		}*/
 
 
 		//returns public key
-		scatter.getIdentity({accounts:[{blockchain:'eos', host:'http://192.99.200.155', port:8888, chainId: "a628a5a6123d6ed60242560f23354c557f4a02826e223bb38aad79ddeb9afbca"}]}).then(identity => {
+		scatter.getIdentity({accounts:[{blockchain:'eos', host:'192.99.200.155', port:8888, chainId: "a628a5a6123d6ed60242560f23354c557f4a02826e223bb38aad79ddeb9afbca"}]}).then(identity => {
+			//const eos = scatter.eos( network, Eos.Localnet(), {} );
+			//console.log(eos);
 			console.log("blabla")
 			console.log(identity);
 			console.log(pub);
@@ -59,7 +147,7 @@ $("#scatter-unlock").on("click", function() {
 
 				}
 			}
-    	}).catch(err => {console.log("err")});
+    	}).catch(err => {console.log(err)});
 
 
 
@@ -237,7 +325,7 @@ $("#send-but").on("click", function() {
 				scatter.getArbitrarySignature(
 					pub, 
 					bufferOriginal, 
-					whatfor = 'Sign Transaction', 
+					whatfor = `Transaction --- From: ${account} --- To: ${_to} --- Amount: ${_amount}`, 
 					isHash = false
 				).then(result3=>{
 
@@ -264,7 +352,7 @@ $("#send-but").on("click", function() {
 		
 	
 	//} else {
-		console.log("NEED TIMER");
+		//console.log("NEED TIMER");
 	//}
 			
 		}
