@@ -2,7 +2,7 @@
 
 A secure, native eos wallet for storing eos and tokens that follow the eosio.token standard.
 
-# How to build locally on unix
+# How to build locally
 
 ```
 git clone https://github.com/Hashbit-Technologies/eoswalletpro
