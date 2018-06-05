@@ -128,7 +128,7 @@ html,body {padding:0; margin:0;}
 	left: 10%;
 	top: 180px;
 	width: 50%;
-	height: 300px;
+	height: 385px;
 }
 
 #selector {
@@ -180,6 +180,10 @@ html,body {padding:0; margin:0;}
 	top: 130px;
 }
 
+#memo-sub {
+	top: 220px;
+}
+
 #to {
 	top: 90px;
 }
@@ -188,8 +192,12 @@ html,body {padding:0; margin:0;}
 	top: 165px;
 }
 
+#memo {
+	top: 255px;
+}
+
 #send-but {
-	top: 239px;
+	top: 320px;
 	height: 38px;
 	width: 80%;
 	font-family: menlo;
@@ -198,6 +206,18 @@ html,body {padding:0; margin:0;}
 #send-title {
 	font-size: 22px;
 	top: 15px;
+}
+
+#explorer-info {
+	position: absolute;
+	left: 63%;
+	top: 495px;
+	width: 27%;
+	height: 70px;
+}
+
+#open-explorer {
+	top: -58%;
 }
 
 #block-info {
@@ -274,7 +294,7 @@ html,body {padding:0; margin:0;}
 #account-box {
 	width: 80%;
 	height: 300px;
-	top: 520px;
+	top: 600px;
 }
 
 #account-deet-title {

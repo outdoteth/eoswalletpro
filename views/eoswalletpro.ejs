@@ -188,10 +188,12 @@
 				<input type="text" id="to" placeholder="Enter account recipient" class="send-bars center">
 				<p class="send-subs" id="amount-sub">Amount to send</p>
 				<input type="text" id="amount" class="send-bars center" placeholder="Enter amount to send">
+				<p class="send-subs" id="memo-sub">Memo (optional)</p>
+				<input type="text" id="memo" class="send-bars center" placeholder="Enter a message to be sent with your transaction">
 				<select id="selector">
 					<option value="EOS">EOS</option>
 				</select>
-				<p id="send-all">Send entire balance</p>
+				<p id="send-all">Send entire eos balance</p>
 			</form>
 			<button id="send-but" class="center button-green">Send Transaction</button>
 			<div id="success" class="center hide">
@@ -208,6 +210,12 @@
 				<button class="button-green blocks center" id="buy-eos">Lookup Account</button>
 				<button class="button-green blocks center" id="buy-token">Purchase EOS</button>
 				<button class="button-green blocks center" id="buy-tokens">Purchase Tokens</button>
+			</div>
+		</div>
+
+		<div id="explorer-info" class="box">
+			<div class="block-i">
+				<button class="button-blue explorer center blocks" id="open-explorer">Block Explorer</button>
 			</div>
 		</div>
 

@@ -1,8 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
-var Eos = require('./eos-live/src/index');
-var eos = Eos.Testnet({httpEndpoint: 'http://192.99.200.155:8888', chainId: "a628a5a6123d6ed60242560f23354c557f4a02826e223bb38aad79ddeb9afbca"});
+var Eos = require('./eos-live/eosjs/src/index');
+var eos = Eos({httpEndpoint: 'http://192.99.200.155:8888', chainId: "7d47aae09c97dbc21d52c6d9f17bb70a1f1f2fda5f81b3ef18979b74b2070d8c"});
 
 
 
@@ -164,11 +164,17 @@ app.post('/createaccount', function(req, res, status) {
 
 app.post('/transaction', function(req, res, status) {
 	let params = req.body;
+	let memo = params.memo;
 	eos.getAccount(params.to).then(result1=>{
+		if (params.memo && memo.length < 200) {
+			memo = params.memo;
+		} else {
+			memo = '';
+		}
 		if (params.to && params.amount && result1.account_name) {
 			eos.getAccount(params.from).then(result2=>{
 				if (result2.cpu_limit.available > 800) {
-					eos.transfer(params.from, params.to, params.amount, "", {broadcast: false, sign: false}).then(result=>{
+					eos.transfer(params.from, params.to, params.amount, memo, {broadcast: false, sign: false}).then(result=>{
 						let packedtr = result.transaction;
 						let packedTr = JSON.stringify(packedtr);
 						let stringBuf = JSON.stringify(result.buffer);

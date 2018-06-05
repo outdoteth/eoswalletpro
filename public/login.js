@@ -1,4 +1,4 @@
-let ecc = require('./eosjs-ecc/src/index');
+let ecc = require('./eosjs-ecc/eosjs-ecc/eosjs-ecc/src/index'); //Using eosjs-ecc https://github.com/EOSIO/eosjs-ecc
 
 $(document).ready(function() {
 
@@ -9,28 +9,20 @@ let foundScatter = false;
 let scatter;
 let scatterUnlocked = false;
 
+//Using Scatter https://github.com/EOSEssentials/Scatter
 document.addEventListener('scatterLoaded', scatterExtension => {
-    // Scatter will now be available from the window scope.
-    // At this stage the connection to Scatter from the application is 
-    // already encrypted. 
     scatter = window.scatter;
     foundScatter = true;
-    
-    // It is good practice to take this off the window once you have 
-    // a reference to it.
     window.scatter = null;
-     
-    // If you want to require a specific version of Scatter
-    
-    //...
 });
 
 $("#start-offline").on("click", function(){
 	toggleHide(".offline-1st", true);
-})
+});
+
+let getAccountLink;
 
 $(".1-but").on("click", function(){
-	console.log("x");
 	toggleHide(".offline-1st", false);
 	toggleHide(".offline-2nd", true);
 });
@@ -59,7 +51,6 @@ $("#generate-tx-offline-but").on("click", function(){
 			if (data.packedTr) {
 					offlinesignbuf = Buffer.from(JSON.parse(data.buf).data);
 					offlinepackedTr = data.packedTr;
-					console.log(offlinepackedTr);
 					$("#raw-tx-text").text(offlinepackedTr);
 					toggleHide(".offline-2nd", false);
 					toggleHide(".offline-3rd", true);
@@ -83,7 +74,6 @@ $(".3-but").on("click", function(){
 
 $("#offline-broadcast").on("click", function(){
 	$.post('/pushtransaction', {sigs: offlinesig, packedTr: offlinepackedTr}, function(data){
-		console.log(data);
 		if (data.transaction_id) {
 			toggleHide("#offline-success", true);
 			$("#offline-success").text("Tx Id - " + data.transaction_id);
@@ -102,28 +92,18 @@ $(".4-but").on("click", function(){
 	toggleHide(".offline-tx-box", false);
 })
 
+$(".explorer").on("click", function(){
+	window.open(`http://eospark.com`,'_blank');
+});
+
 
 
 
 $("#scatter-unlock").on("click", function() {
 	if(foundScatter) {
-		console.log("HELLO!");
-		/*const network = {
-		    blockchain:'eos',
-		    host:'http://192.99.200.155', // ( or null if endorsed chainId )
-		    port:8888, // ( or null if defaulting to 80 )
-		    chainId:"a628a5a6123d6ed60242560f23354c557f4a02826e223bb38aad79ddeb9afbca", // Or null to fetch automatically ( takes longer )
-		}*/
-
 
 		//returns public key
-		scatter.getIdentity({accounts:[{blockchain:'eos', host:'192.99.200.155', port:8888, chainId: "a628a5a6123d6ed60242560f23354c557f4a02826e223bb38aad79ddeb9afbca"}]}).then(identity => {
-			//const eos = scatter.eos( network, Eos.Localnet(), {} );
-			//console.log(eos);
-			console.log("blabla")
-			console.log(identity);
-			console.log(pub);
-			console.log(scatter.identity);
+		scatter.getIdentity({accounts:[{blockchain:'eos', host:'192.99.200.155', port:8888, chainId: "01750cf763fbac963c344639d96ce503eadbf045aa7e4da67813290673112fd7"}]}).then(identity => {
 			if (identity.accounts) {
 				let account_arr = identity.accounts;
 				toggleHide("#account-pick-box", true);
@@ -161,7 +141,6 @@ $("#scatter-unlock").on("click", function() {
     	//THEN write if(signWithScatter){scatter.sign(buf)};
 
 	} else {
-		console.log("FAIL!");
 	}
 })
 
@@ -183,7 +162,6 @@ $("#loginbut").on('click', function() {
 	}
 	else { pub = ecc.privateToPublic(priv)
 	if (pub[0] === "E") {
-		console.log(pub);
 		account = $("#account-set").val();
 		/*if (account.length !== 12) {
 			$("#error-account").text("Error - Due to the new Dawn 4.2.0 standard, account names must now be exactly 12 characters long");
@@ -203,7 +181,10 @@ $("#loginbut").on('click', function() {
 										toggleHide(".main-wallet", true);
 										toggleHide("#account-pick-box", false);
 										$("#account-name").text(`Account: ${account_arr[i]}`);
-										console.log(account_arr[i]);
+										getAccountLink = account_arr[i]
+										$("#get-account").on("click", function(){
+											window.open(`http://eospark.com/Jungle/account/${account_arr[i]}`,'_blank');
+										});
 										getInfo(account_arr[i]);
 										account = account_arr[i];
 									});
@@ -213,27 +194,6 @@ $("#loginbut").on('click', function() {
 							}
 			}
 		});
-		/*$.post('/login', {pubkeys: pub, account: account}, function(data) {
-			if (data.login) {
-				console.log(pub);
-				toggleHide(".login", false);
-				toggleHide(".main-wallet", true);
-				$.post('/pubtoacct', {account_target: account}, function(data){
-					if (data.account) {
-						console.log(data.account);
-						getInfo(account);
-						$("#account-name").text("Account: " + account);
-					} else {
-						$("#error-account").toggleClass("hide");
-					};
-				}) 
-
-			} else {
-				$("#error-account").text("Error - Private key does not match account permissions");
-				toggleHide("#error-account", true);
-			}
-		})*/
-	//}
 	}
 
 	}
@@ -261,7 +221,6 @@ function getInfo(account_t) {
 		eosBalance = eosBalanceI[0];
 		pub = data.returnkey;
 
-		console.log(data);
 		$("#cpu-limit").text("CPU limit: " + data.cpu_limit);
 		$("#ram-usage").text("Ram usage: " + data.ram_usage);
 		$("#ram-head").text("Ram: " + data.ram_usage);
@@ -299,29 +258,22 @@ $("#send-but").on("click", function() {
 		let _amountInput = $('#amount').val();
 		let _amountCheck = $(`.${_token}`);
 		let stringNum = _amountCheck.text();
-		console.log(stringNum);
 		let checkNumArr = stringNum.split(" ");
-		console.log(checkNumArr);
 		let _amountAgainst = Number(checkNumArr[0]);
-
-		console.log(_amountAgainst);
 
 		//if (_amountInput <= _amountAgainst) {
 
 		let _amount = $('#amount').val() + " " + _token;
-		console.log(_amount);
-		console.log(account);
-		$.post('/transaction', {from: account, to: _to, amount: _amount, pubkeys: pub}, function(data, status) {
+		let _memo = $("#memo").val();
+		$.post('/transaction', {from: account, to: _to, amount: _amount, memo: _memo, pubkeys: pub}, function(data, status) {
 			//signs serialized tx
 			let bufferOriginal = Buffer.from(JSON.parse(data.buf).data);
 			let packedTr = data.packedTr;
-			console.log(packedTr);
 			//let sig = []
 			//sig.push(ecc.sign(bufferOriginal, priv));
 			//console.log(sig);
 
 			if (!data.e) {
-				console.log(pub);
 				scatter.getArbitrarySignature(
 					pub, 
 					bufferOriginal, 
@@ -330,15 +282,11 @@ $("#send-but").on("click", function() {
 				).then(result3=>{
 
 					$.post('/pushtransaction', {sigs: result3, packedTr: packedTr}, function(data, status){
-						console.log(data);
 						toggleHide("#success", true);
 						$("#tx-id").text("Transaction Id: " + data.transaction_id);
 						setTimeout(function(){isValid=true;}, 1000);
 						setTimeout(function(){toggleHide("#success", false); getInfo(account);}, 4000);
 					});
-
-
-					console.log(result3)
 
 				});
 
@@ -362,34 +310,26 @@ $("#send-but").on("click", function() {
 		isValid = false;
 		let _token = $("#selector").val()
 		let _to = $('#to').val();
+		let _memo = $("#memo").val();
 		let _amountInput = $('#amount').val();
 		let _amountCheck = $(`.${_token}`);
 		let stringNum = _amountCheck.text();
-		console.log(stringNum);
 		let checkNumArr = stringNum.split(" ");
-		console.log(checkNumArr);
 		let _amountAgainst = Number(checkNumArr[0]);
-
-		console.log(_amountAgainst);
 
 		//if (_amountInput <= _amountAgainst) {
 
 		let _amount = $('#amount').val() + " " + _token;
-		console.log(_amount);
-		console.log(account);
-		$.post('/transaction', {from: account, to: _to, amount: _amount, pubkeys: pub}, function(data, status) {
+		$.post('/transaction', {from: account, to: _to, amount: _amount, memo: _memo, pubkeys: pub}, function(data, status) {
 			//signs serialized tx
 			let bufferOriginal = Buffer.from(JSON.parse(data.buf).data);
 			let packedTr = data.packedTr;
-			console.log(packedTr);
 			let sig = []
 			sig.push(ecc.sign(bufferOriginal, priv));
-			console.log(sig);
 
 			if (!data.e) {
 				//sends sig back to server
 				$.post('/pushtransaction', {sigs: ecc.sign(bufferOriginal, priv), packedTr: packedTr}, function(data, status){
-					console.log(data);
 					toggleHide("#success", true);
 					$("#tx-id").text("Transaction Id: " + data.transaction_id);
 					setTimeout(function(){toggleHide("#success", false); getInfo(account);}, 4000);
@@ -436,7 +376,6 @@ $(".lookup-but").on("click", function() {
 		$("#bandwidth-lookup").text("Delegated bandwidth: " + data.bandwidth);
 		$("#creation-lookup").text("Creation date: " + data.created);
 		$.post('/getbalance', {targetAcct: targetAcct}, function(data){
-			console.log(data[0].balance);
 			$("#balance-lookup").text("Balance: " + data[0].balance);
 		})
 	});
@@ -469,9 +408,9 @@ $("#createacct").on('click', function() {
 
 
 $("#generate-but").on("click", function(){
-	$.post('/createaccount', {pubkey: pubkeys}, function(res, res, status){
-		console.log(res);
-	});
+	//$.post('/createaccount', {pubkey: pubkeys}, function(res, res, status){
+
+	//});
 });
 
 });

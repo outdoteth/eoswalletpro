@@ -1709,7 +1709,7 @@ module.exports={
   "_args": [
     [
       "bigi@1.4.2",
-      "/Users/levi/Desktop/eoswalletpro/eosjs-ecc"
+      "/Users/levi/Desktop/public-stage/eosjs-ecc/eosjs-ecc"
     ]
   ],
   "_from": "bigi@1.4.2",
@@ -1734,7 +1734,7 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/bigi/-/bigi-1.4.2.tgz",
   "_spec": "1.4.2",
-  "_where": "/Users/levi/Desktop/eoswalletpro/eosjs-ecc",
+  "_where": "/Users/levi/Desktop/public-stage/eosjs-ecc/eosjs-ecc",
   "bugs": {
     "url": "https://github.com/cryptocoinjs/bigi/issues"
   },
@@ -11154,8 +11154,8 @@ function getName(fn) {
   return match ? match[1] : null
 }
 
-}).call(this,{"isBuffer":require("../../../../../../../../usr/local/lib/node_modules/browserify/node_modules/is-buffer/index.js")})
-},{"../../../../../../../../usr/local/lib/node_modules/browserify/node_modules/is-buffer/index.js":75}],59:[function(require,module,exports){
+}).call(this,{"isBuffer":require("../../../../../../../../../../usr/local/lib/node_modules/browserify/node_modules/is-buffer/index.js")})
+},{"../../../../../../../../../../usr/local/lib/node_modules/browserify/node_modules/is-buffer/index.js":75}],59:[function(require,module,exports){
 const createHash = require('create-hash')
 const createHmac = require('create-hmac')
 
@@ -11393,11 +11393,12 @@ PrivateKey.fromBuffer = function(buf) {
     if (!Buffer.isBuffer(buf)) {
         throw new Error("Expecting parameter to be a Buffer type");
     }
-    if (32 !== buf.length) {
-        console.log(`WARN: Expecting 32 bytes, instead got ${buf.length}, stack trace:`, new Error().stack);
+    if(buf.length === 33 && buf[32] === 1) {
+      // remove compression flag
+      buf = buf.slice(0, -1)
     }
-    if (buf.length === 0) {
-        throw new Error("Empty buffer");
+    if (32 !== buf.length) {
+      throw new Error(`Expecting 32 bytes, instead got ${buf.length}`);
     }
     return PrivateKey(BigInteger.fromBuffer(buf));
 }
@@ -12249,7 +12250,7 @@ Signature.from = (o) => {
 }).call(this,require("buffer").Buffer)
 },{"./ecdsa":56,"./hash":59,"./key_private":61,"./key_public":62,"./key_utils":63,"assert":67,"bigi":4,"buffer":70,"ecurve":33}],66:[function(require,module,exports){
 (function (Buffer){
-let ecc = require('./eosjs-ecc/src/index');
+let ecc = require('./eosjs-ecc/eosjs-ecc/eosjs-ecc/src/index');
 
 $(document).ready(function() {
 
@@ -12278,7 +12279,9 @@ document.addEventListener('scatterLoaded', scatterExtension => {
 
 $("#start-offline").on("click", function(){
 	toggleHide(".offline-1st", true);
-})
+});
+
+let getAccountLink;
 
 $(".1-but").on("click", function(){
 	console.log("x");
@@ -12353,30 +12356,23 @@ $(".4-but").on("click", function(){
 	toggleHide(".offline-tx-box", false);
 })
 
+$(".explorer").on("click", function(){
+	window.open(`http://eospark.com`,'_blank');
+});
+
 
 
 
 $("#scatter-unlock").on("click", function() {
 	if(foundScatter) {
-		console.log("HELLO!");
-		/*const network = {
-		    blockchain:'eos',
-		    host:'http://192.99.200.155', // ( or null if endorsed chainId )
-		    port:8888, // ( or null if defaulting to 80 )
-		    chainId:"a628a5a6123d6ed60242560f23354c557f4a02826e223bb38aad79ddeb9afbca", // Or null to fetch automatically ( takes longer )
-		}*/
-
 
 		//returns public key
-		scatter.getIdentity({accounts:[{blockchain:'eos', host:'192.99.200.155', port:8888, chainId: "a628a5a6123d6ed60242560f23354c557f4a02826e223bb38aad79ddeb9afbca"}]}).then(identity => {
+		scatter.getIdentity({accounts:[{blockchain:'eos', host:'dev.cryptolions.io', port:8888, chainId: "7d47aae09c97dbc21d52c6d9f17bb70a1f1f2fda5f81b3ef18979b74b2070d8c"}]}).then(identity => {
 			//const eos = scatter.eos( network, Eos.Localnet(), {} );
 			//console.log(eos);
-			console.log("blabla")
-			console.log(identity);
-			console.log(pub);
-			console.log(scatter.identity);
 			if (identity.accounts) {
 				let account_arr = identity.accounts;
+        account = identity.accounts;
 				toggleHide("#account-pick-box", true);
 				$("#account-list").empty();
 				if (account_arr.length >= 1){
@@ -12389,16 +12385,21 @@ $("#scatter-unlock").on("click", function() {
 							toggleHide(".main-wallet", true);
 							toggleHide("#account-pick-box", false);
 							$("#account-name").text(`Account: ${account_arr[i].name}`);
+              getAccountLink = account_arr[i];
+              console.log(identity.accounts[0].name);
+              $("#get-account").on("click", function(){
+                  window.open(`http://eospark.com/Jungle/account/${account_arr[i].name}`,'_blank');
+              });
 							console.log(account_arr[i].name);
 							getInfo(account_arr[i].name);
 							account = account_arr[i].name;
 						});
-					}
-					} else {
-
+				  }
+				} else {
+          console.log("fail");
 				}
 			}
-    	}).catch(err => {console.log(err)});
+    	}).catch(err => {console.log("err")});
 
 
 
@@ -12454,6 +12455,10 @@ $("#loginbut").on('click', function() {
 										toggleHide(".main-wallet", true);
 										toggleHide("#account-pick-box", false);
 										$("#account-name").text(`Account: ${account_arr[i]}`);
+										getAccountLink = account_arr[i]
+										$("#get-account").on("click", function(){
+											window.open(`http://eospark.com/Jungle/account/${account_arr[i]}`,'_blank');
+										});
 										console.log(account_arr[i]);
 										getInfo(account_arr[i]);
 										account = account_arr[i];
@@ -12560,9 +12565,10 @@ $("#send-but").on("click", function() {
 		//if (_amountInput <= _amountAgainst) {
 
 		let _amount = $('#amount').val() + " " + _token;
+		let _memo = $("#memo").val();
 		console.log(_amount);
 		console.log(account);
-		$.post('/transaction', {from: account, to: _to, amount: _amount, pubkeys: pub}, function(data, status) {
+		$.post('/transaction', {from: account, to: _to, amount: _amount, memo: _memo, pubkeys: pub}, function(data, status) {
 			//signs serialized tx
 			let bufferOriginal = Buffer.from(JSON.parse(data.buf).data);
 			let packedTr = data.packedTr;
@@ -12613,6 +12619,7 @@ $("#send-but").on("click", function() {
 		isValid = false;
 		let _token = $("#selector").val()
 		let _to = $('#to').val();
+		let _memo = $("#memo").val();
 		let _amountInput = $('#amount').val();
 		let _amountCheck = $(`.${_token}`);
 		let stringNum = _amountCheck.text();
@@ -12628,7 +12635,7 @@ $("#send-but").on("click", function() {
 		let _amount = $('#amount').val() + " " + _token;
 		console.log(_amount);
 		console.log(account);
-		$.post('/transaction', {from: account, to: _to, amount: _amount, pubkeys: pub}, function(data, status) {
+		$.post('/transaction', {from: account, to: _to, amount: _amount, memo: _memo, pubkeys: pub}, function(data, status) {
 			//signs serialized tx
 			let bufferOriginal = Buffer.from(JSON.parse(data.buf).data);
 			let packedTr = data.packedTr;
@@ -12730,7 +12737,7 @@ $("#generate-but").on("click", function(){
 
 
 }).call(this,require("buffer").Buffer)
-},{"./eosjs-ecc/src/index":60,"buffer":70}],67:[function(require,module,exports){
+},{"./eosjs-ecc/eosjs-ecc/eosjs-ecc/src/index":60,"buffer":70}],67:[function(require,module,exports){
 (function (global){
 'use strict';
 
