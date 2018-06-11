@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
 var Eos = require('./eos-pro/eosjs/src/index');
-var eos = Eos({httpEndpoint: 'http://192.99.200.155:8888', chainId: "7d47aae09c97dbc21d52c6d9f17bb70a1f1f2fda5f81b3ef18979b74b2070d8c"});
+var eos = Eos({httpEndpoint: 'https://api.eosio.cr/', chainId: "aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906"});
 
 
 

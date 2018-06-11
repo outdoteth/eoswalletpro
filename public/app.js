@@ -12367,7 +12367,7 @@ $("#scatter-unlock").on("click", function() {
 	if(foundScatter) {
 
 		//returns public key
-		scatter.getIdentity({accounts:[{blockchain:'eos', host:'dev.cryptolions.io', port:8888, chainId: "7d47aae09c97dbc21d52c6d9f17bb70a1f1f2fda5f81b3ef18979b74b2070d8c"}]}).then(identity => {
+		scatter.getIdentity({accounts:[{blockchain:'eos', httpEndpoint: 'https://api.eosio.cr/', chainId: "aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906"}]}).then(identity => {
 			//const eos = scatter.eos( network, Eos.Localnet(), {} );
 			//console.log(eos);
 			if (identity.accounts) {
@@ -12388,7 +12388,7 @@ $("#scatter-unlock").on("click", function() {
               getAccountLink = account_arr[i];
               console.log(identity.accounts[0].name);
               $("#get-account").on("click", function(){
-                  window.open(`http://eospark.com/Jungle/account/${account_arr[i].name}`,'_blank');
+                  window.open(`http://eospark.com/MainNet/account/${account_arr[i].name}`,'_blank');
               });
 							console.log(account_arr[i].name);
 							getInfo(account_arr[i].name);
@@ -12457,7 +12457,7 @@ $("#loginbut").on('click', function() {
 										$("#account-name").text(`Account: ${account_arr[i]}`);
 										getAccountLink = account_arr[i]
 										$("#get-account").on("click", function(){
-											window.open(`http://eospark.com/Jungle/account/${account_arr[i]}`,'_blank');
+											window.open(`http://eospark.com/MainNet/account/${account_arr[i]}`,'_blank');
 										});
 										console.log(account_arr[i]);
 										getInfo(account_arr[i]);
