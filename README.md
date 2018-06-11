@@ -8,8 +8,9 @@ A secure, native eos wallet for storing eos and tokens that follow the eosio.tok
 git clone https://github.com/Hashbit-Technologies/eoswalletpro
 cd eoswalletpro
 npm install
-cd eos-live
+cd eos-pro/eosjs
 npm install
+cd ..
 cd ..
 node app
 ```
